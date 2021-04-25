@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
+const userRoutes = require('./routes/user');
+const profilRoutes = require('./routes/profil');
+const postRoutes = require('./routes/post');
+
 // déclaration de l'application express
 const app = express();
 
@@ -17,10 +21,15 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const db = require("./models");
+
+db.sequelize.sync();
+
 // définition des routes
-app.get("/", (req, res) => {
-	res.json({ message: "Welcome to groupomania application." });
- });
+
+app.use("/api/auth", userRoutes);
+app.use("/api/users", profilRoutes);
+app.use('/api/posts', postRoutes); 
 
  // export de l'application express
 module.exports = app;
