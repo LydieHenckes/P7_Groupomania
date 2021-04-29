@@ -11,7 +11,7 @@ exports.getAllPosts = (req, res, next) => {
 	posts.isdeleted AS postIsDeleted, 
 	posts.created_at AS createdAt, posts.updated_at AS updatedAt, 
 	user_id AS userId, users.lastname, 
-	users.firstname, users.email, users.photourl AS userPhotourl,
+	users.firstname, users.photourl AS userPhotourl,
 	users.isdeleted AS userIsDeleted, 
 	post_photos.photourl,
     ( SELECT COUNT(*)
@@ -33,8 +33,7 @@ exports.getAllPosts = (req, res, next) => {
 	})
 	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
 
-	// where posts.id = 3
-	
+
 	/*	{
 			attributes: {
 				include: [
@@ -80,7 +79,7 @@ exports.getPostsByUserId = (req, res, next) => {
 	posts.isdeleted AS postIsDeleted, 
 	posts.created_at AS createdAt, posts.updated_at AS updatedAt, 
 	user_id AS userId, users.lastname, 
-	users.firstname, users.email, users.photourl AS userPhotourl,
+	users.firstname, users.photourl AS userPhotourl,
 	users.isdeleted AS userIsDeleted, 
 	post_photos.photourl,
     ( SELECT COUNT(*)
@@ -132,6 +131,35 @@ exports.getPostsByUserId = (req, res, next) => {
 };
 
 exports.getOnePost = (req, res, next) => {
+	const { QueryTypes } = require('sequelize');
+	
+	db.sequelize.query(`SELECT posts.id AS postId, content, 
+	posts.isdeleted AS postIsDeleted, 
+	posts.created_at AS createdAt, posts.updated_at AS updatedAt, 
+	user_id AS userId, users.lastname, 
+	users.firstname,  users.photourl AS userPhotourl,
+	users.isdeleted AS userIsDeleted, 
+	post_photos.photourl,
+    ( SELECT COUNT(*)
+        FROM likes
+        WHERE
+            likes.post_id = posts.id
+    ) AS likeCount,
+    ( SELECT COUNT(*)
+        FROM dislikes
+        WHERE
+            dislikes.post_id = posts.id
+    ) AS dislikeCount
+	FROM posts
+	left join post_photos on post_photos.post_id = posts.id 
+	left join users on users.id = posts.user_id 
+	where posts.id = ${req.params.id}`, { type: QueryTypes.SELECT })
+	.then(posts => {
+		res.status(200).json(posts)
+	})
+	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+	/*********************** */
+	/*
 	db.Post.findOne({
 		where: {
 			id: req.params.id
@@ -149,6 +177,7 @@ exports.getOnePost = (req, res, next) => {
   })
   	.then(posts => res.status(200).json(posts))
 	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+	*/
 };
 
 
@@ -175,21 +204,21 @@ exports.createPost = (req, res, next) => {
 							res.status(201).json({ 
 								postId: post.id,
 								content: post.content,
-								isDeleted: post.isdeleted,
-								createdAt: post.created_at,
-								updatedAt: post.updated_at,
+								postIsDeleted: post.isdeleted,
+								createdAt: post.createdAt,
+								updatedAt : post.updatedAt,
 								userId: post.UserId,
 								photourl: postPhoto.photourl,
 							})
 						})
-						.catch();
+						.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
 					}else {
 						res.status(201).json({ 
 							postId: post.id,
 							content: post.content,
-							isDeleted: post.isdeleted,
-							createdAt: post.created_at,
-							updatedAt: post.updated_at,
+							postIsDeleted: post.isdeleted,
+							createdAt: post.createdAt,
+							updatedAt : post.updatedAt,
 							userId: post.UserId,
 					})
 					}
@@ -203,35 +232,86 @@ exports.modifyPost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
+	db.Post.findByPk(req.params.id)
+	.then(post => {
+		if (!post) {
+			res.status(400).json({ error: "Post n'existe pas !" })
+		} else {
+			// если есть к посту картинка- удалить
+			db.PostPhoto.findOne({ where: { post_id: req.params.id} })
+			.then(postPhoto => {
+				post.destroy({ where: { id: req.params.id} })
+					.then(() => res.status(200).json({ message: "Post supprimé !" }))
+					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
+	/*  // changer pour ce code si il y a des vrais images
+			if (postPhoto) {
+				const filename = postPhoto.photourl.split('/images/')[1];
+				fs.unlink(`images/${filename}`, () => {
+					// supprimer post
+					post.destroy({ where: { id: req.params.id} })
+					.then(() => res.status(200).json({ message: "Post supprimé !" }))
+					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
+				})
+				} else {
+					post.destroy({ where: { id: req.params.id} })
+					.then(() => res.status(200).json({ message: "Post supprimé !" }))
+					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
+				}
+				*/
+			})
+			.catch(error => res.status(400).json({ error :"L'erreur de la base de données !"}));
+		}
+	})
+	.catch(error => res.status(400).json({ error :"L'erreur de la base de données !"})); 
 };
 
 /* ************************* Likes et dislikes ***************************** */
 
 exports.likePost = (req, res, next) => { 
 	// ajouter contrôle si il y a une ligne dans dislikes
-	db.Like.findOrCreate({
-		where: {
-			PostId: req.body.postId,
-			UserId: req.body.userId
-		}
-	})
-		.then(([like, created]) => {
-			console.log(like);
-			//  если был лайк - удалить
-			if (created) {
-				res.status(201).json({ 
-					isCreated : created,
-					postId: like.PostId, 
-					userId: like.UserId,
+	db.Dislike.findOne({
+			where: {
+				PostId: req.body.postId,
+				UserId: req.body.userId
+			}
+		})
+		.then(dislike => {
+			if (!dislike) {
+				// création d'un like
+				db.Like.findOrCreate({
+					where: {
+						PostId: req.body.postId,
+						UserId: req.body.userId
+					}
 				})
-			} else {
-				db.Like.destroy( {where: {id: like.id}} )
-					.then(() => {
-						res.status(201).json({ 
-							isCreated : false,
-						})
+					.then(([like, created]) => {
+						console.log(like);
+						//  если был лайк - удалить
+						if (created) {
+							res.status(201).json({ 
+								isCreated : created,
+								isDeleted : false,
+								postId: like.PostId, 
+								userId: like.UserId,
+							})
+						} else {
+							db.Like.destroy( {where: {id: like.id}} )
+								.then(() => {
+									res.status(201).json({ 
+										isCreated : false,
+										isDeleted : true,
+									})
+								})
+								.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
+						}
 					})
 					.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
+			} else {
+				// on ne peut pas creer un like, puisque il y a déjà un dislike
+				res.status(201).json({ 
+					isCreated : false,
+					isDeleted : false,
+				})
 			}
 		})
 		.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
@@ -239,36 +319,49 @@ exports.likePost = (req, res, next) => {
 
 exports.dislikePost = (req, res, next) => {
 // ajouter contrôle si il y a une ligne dans likes
-
-	db.Dislike.findOrCreate({
-		where: {
-			PostId: req.body.postId,
-			UserId: req.body.userId
-		}
-	})
-		.then(([dislike, created]) => {
-			console.log(dislike);
-			//  если был лайк - удалить
-			if (created) {
-				res.status(201).json({ 
-					isCreated : created,
-					postId: dislike.PostId, 
-					userId: dislike.UserId,
-				})
-			} else {
-				db.Dislike.destroy( {where: {id: dislike.id}} )
-					.then(() => {
-						res.status(201).json({ 
-							isCreated : false,
-						})
-					})
-					.catch(error => res.status(500).json({ error:"Erreur de la base de données 1 !" }));
+	db.Like.findOne({
+			where: {
+				PostId: req.body.postId,
+				UserId: req.body.userId
 			}
 		})
-		.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
-};
+		.then(like => {
+			if (!like) {
+				db.Dislike.findOrCreate({
+					where: {
+						PostId: req.body.postId,
+						UserId: req.body.userId
+					}
+				})
+					.then(([dislike, created]) => {
+						if (created) {
+							res.status(201).json({ 
+								isCreated : created,
+								isDeleted : false,
+								postId: dislike.PostId, 
+								userId: dislike.UserId,
+							})
+						} else {
+							db.Dislike.destroy( {where: {id: dislike.id}} )
+								.then(() => {
+									res.status(201).json({ 
+										isCreated : false,
+										isDeleted : true
+									})
+								})
+								.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
+						}
+					})
+					.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
+			
+			} else {
+				// on ne peut pas creer un dislike, puisque il y a déjà un like
+				res.status(201).json({ 
+					isCreated : false,
+					isDeleted : false,
+				})
+			}
+		})
 
-/* ************************* Commentaires ***************************** */
+	};
 
-exports.getCommentsByPostId = (req, res, next) => {
-};

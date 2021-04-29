@@ -1,8 +1,8 @@
-/* Les routes pour les requêtes generales sur users */
+/* Les routes pour les requêtes generales sur posts */
 
 const express = require('express');
 
-// utilisation de la classe express.Router pour créer des gestionnaires de route pour les users
+// utilisation de la classe express.Router pour créer des gestionnaires de route pour les posts
 const router = express.Router();
 
 // la logique métier décrite dans controllers/post.js
@@ -16,9 +16,6 @@ router.get('/:id', postCtrl.getOnePost);
 
 // renvoie des posts correspondant à un userId
 router.get('/:id/user', postCtrl.getPostsByUserId);
-
-// renvoie des comments correspondant à un post id
-router.get('/:id/comments', postCtrl.getCommentsByPostId);
 
 // crée un nouveau post dans la base posts
 router.post('/', postCtrl.createPost);

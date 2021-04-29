@@ -5,6 +5,7 @@ const fs = require('fs');
 const userRoutes = require('./routes/user');
 const profilRoutes = require('./routes/profil');
 const postRoutes = require('./routes/post');
+const commentRoutes = require('./routes/comment');
 
 // déclaration de l'application express
 const app = express();
@@ -30,6 +31,7 @@ db.sequelize.sync();
 app.use("/api/auth", userRoutes);
 app.use("/api/users", profilRoutes);
 app.use('/api/posts', postRoutes); 
+app.use('/api/comments', commentRoutes); 
 
  // export de l'application express
 module.exports = app;

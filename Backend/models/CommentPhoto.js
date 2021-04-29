@@ -1,24 +1,18 @@
 module.exports = (sequelize, Sequelize) => {
-	const Comment = sequelize.define('Comment', {
+	const CommentPhoto = sequelize.define('CommentPhoto', {
 	  id: {
 		 type: Sequelize.INTEGER,
 		 autoIncrement:true, 
        allowNull:false, 
        primaryKey:true
 	  },
-	  content: { 
-      type: Sequelize.TEXT, 
-      allowNull:false
-     }, 
-	  isdeleted: { 
-      type: Sequelize.BOOLEAN, 
-		defaultValue: false,
+	  photourl: { 
+      type: Sequelize.STRING, 
       allowNull:false
      }
 	},
 	{ underscored: true }
 	);
- 
-	return Comment;
+	return CommentPhoto;
  };
 
