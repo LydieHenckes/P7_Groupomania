@@ -1,2 +1,3 @@
-Backend/config/db.config.js
-Backend/node_modules
+backend/config/db.config.js
+backend/node_modules
+frontend/node_modules

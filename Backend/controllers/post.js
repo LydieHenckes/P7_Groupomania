@@ -116,10 +116,10 @@ exports.getPostsByUserId = (req, res, next) => {
 			model:  db.PostPhoto,
 			attributes: ["photourl"] 
 		},
-	//	{
-	//		model: db.Like,
-	//		attributes: [[db.sequelize.fn('COUNT', db.sequelize.col(id), 'likes')]]
-	//	}
+		{
+			model: db.Like,
+			attributes: [[db.Sequelize.fn('COUNT', db.Sequelize.col(id), 'likes')]]
+		}
 	],
 		order: [
 			 ['createdAt', 'DESC']

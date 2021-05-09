@@ -1,0 +1,9 @@
+.text {
+	color: var(--color-error);
+	margin: auto;
+	margin-top: 100px;
+	text-align: center;
+	text-shadow: 0 0 2px rgb(206, 153, 153);
+	line-height: 1.7;
+	font-size: var(--font-size-medium);
+}
