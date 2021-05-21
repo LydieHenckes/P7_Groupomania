@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
 				res.status(201).json({
 					userId : user.id,
 					firstName: user.firstname,
-					lirstName: user.lastname,
+					lastName: user.lastname,
 					isAdmin: user.isadmin,
 					isDeleted: user.isdeleted,
 					token: jwt.sign(
@@ -61,7 +61,7 @@ exports.signup = (req, res, next) => {
 	  .then(user => {
 		  // si il n'y a pas d'utilisateur avec cet email
 		 if (!user) {
-			return res.status(401).json({ error: 'Utilisateur non trouvé ou le mot de passe incorrect!' });
+			return res.status(404).json({ error: 'Utilisateur non trouvé ou le mot de passe incorrect!' });
 		 }
 
 		 // comparaison des hash de nouveau mot de passe, avec hash du mot de passe dans la base
@@ -70,19 +70,66 @@ exports.signup = (req, res, next) => {
 			  if (!valid) {
 				 return res.status(401).json({ error: 'Utilisateur non trouvé ou le mot de passe incorrect!' });
 			  }
-			  // si les hashs provient du même mot de passe, envoie du userId et token 
+			  // si les hashs provient du même mot de passe, envoie du userId et token comme cookie
+			  const token =  jwt.sign(
+				{ userId: user.id,
+				  isadmin: user.isadmin,
+				},
+				'az8K56GTF712dpB',
+				{ expiresIn: '24h' }
+			 );
+//			 console.log('token: ', token);
+			  res.cookie('jwt', token, { httpOnly: true, maxAge : 24 * 60 * 60 * 1000});
 			  res.status(200).json({
-				 userId: user.id, 
-				 token: jwt.sign(
-					{ userId: user.id,
-					  isadmin: user.isadmin,
-					},
-					'az8K56GTF712dpB',
-					{ expiresIn: '24h' }
-				 )
+				 userId: user.id,
+				 firstName: user.firstname,
+				 lastName: user.lastname,
+				 isAdmin: user.isadmin,
+				 isDeleted: user.isdeleted,
+				 token: token // это можно не отсылать
 			  });
 			})
-			.catch(error => res.status(500).json({ error }));
+			.catch(error => res.status(500).json({ error: '1' }));
 	  })
 	  .catch(error => res.status(500).json({ error }));
+ };
+
+ 
+ // logique métier pour la route user (authentification d'utilisateur)
+ exports.user = async (req, res, next) => {
+	try {
+		const cookie = req.cookies['jwt'];
+
+		const claims = jwt.verify(cookie, 'az8K56GTF712dpB');
+		if (!claims) {
+			return res.status(401).json({ error: 'unauthenticated' });
+		};
+		db.User.findOne({
+			where: {
+			  id: claims.userId
+			}
+		 })
+		 .then(user => {
+			if (!user) {
+				return res.status(404).json({ error: 'Utilisateur non trouvé ou le mot de passe incorrect!' });
+			 }
+			 res.status(200).json({
+				userId: user.id,
+				firstName: user.firstname,
+				lastName: user.lastname,
+				isAdmin: user.isadmin,
+				isDeleted: user.isdeleted,
+			 });
+		 })
+		 .catch(error =>  res.status(404).json({ error: 'Utilisateur non trouvé ou le mot de passe incorrect!' }));
+
+	 } catch {
+		res.status(401).json({ error: 'unauthenticated' });
+	 }
+ };
+
+ exports.logout = (req, res, next) => {
+	 console.log('Ici');
+	 res.cookie('jwt', '', {maxAge: 0});
+	 res.send({message: 'success'});
  };

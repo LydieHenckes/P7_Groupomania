@@ -1,0 +1,40 @@
+.wrapper {
+	margin: 0 auto;
+}
+
+.form {
+	margin: 20px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+
+	border: 1px solid rgb(59, 59, 97);
+/*
+	width: 50%;
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: translateX(-50%);
+	*/
+}
+
+.form__item {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.form__item input {
+	width: 450px;
+}
+
+.form__label {
+
+}
+.form__input {
+
+}
+.form__button {
+
+}

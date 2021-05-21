@@ -1,8 +1,21 @@
 :root {
   --color-background:  rgb(230, 234, 240); 
   --color-error: rgb(190, 32, 32);
+  --color-title: rgb(40, 40, 105);
+  --color-header: rgb(51, 51, 78);
+  --color-border-header: rgb(104, 104, 161);
 
   --font-size-medium: 1.3em;
+
+  --font-bold: 600;
+  --font-family-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',   sans-serif;
+
+  --spacing-small : 0.5em;
+  --spacing-medium : 1em;
+  --spacing-large : 1.5em;
+
+  --transition: .4s;
 }
 
 body {
@@ -20,4 +33,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.header__text {
+  line-height: 1.7;
+  font-size: var(--font-size-medium);
+  color: var(--color-title);
 }

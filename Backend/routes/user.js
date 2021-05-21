@@ -14,4 +14,10 @@ router.post('/signup',  userCtrl.signup);
 //connection
 router.post('/login', userCtrl.login);
 
+//authentification d'un utilisateur
+router.get('/user', userCtrl.user);
+
+//logout d'un utilisateur
+router.post('/logout', userCtrl.logout);
+
 module.exports = router;

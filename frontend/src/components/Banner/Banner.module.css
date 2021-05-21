@@ -2,12 +2,12 @@
 	color: rgb(43, 29, 82);
 	text-align: right;
 	padding: 32px;
-	border-bottom: solid 3px rgb(43, 29, 82);;
+	border-bottom: solid 3px rgb(43, 29, 82);
 	display: flex;
 	justify-content: flex-end;
 	flex-direction: row;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: var(--spacing-large);
 }
 
 .banner__title {
