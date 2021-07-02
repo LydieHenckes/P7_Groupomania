@@ -56,12 +56,7 @@ const LogIn = ({ firstname, setFirstname, setLastname }) => {
 		};
 		*/
 	};
-	/*
-	useEffect(() => {
-		console.log('redirect: ', redirect);
-		
-	}, [redirect]);
-	*/
+
 	if (redirect) {
 			
 		return <Redirect to="/"/>;
@@ -85,8 +80,8 @@ const LogIn = ({ firstname, setFirstname, setLastname }) => {
 
 LogIn.propTypes = {
 	setErrorApi: PropTypes.func,
-//	setFirstname: PropTypes.func, 
-//	setLastname :PropTypes.func
+	setFirstname: PropTypes.func, 
+	setLastname :PropTypes.func
 }
 
 export default LogIn;

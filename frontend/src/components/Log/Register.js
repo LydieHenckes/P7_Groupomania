@@ -36,7 +36,7 @@ const Register = () => {
 	return (
 		<div className= "form-signin">
 			<form onSubmit = {submit}>
-				<h1 className="h3 mb-3 fw-normal">S'inscrire</h1>
+				<h1 className="h3 mb-3 fw-normal">Inscrivez-vous</h1>
 				<input type="lastname" className="form-control" placeholder="Nom" required 
 					onChange = {e => setLastname(e.target.value)} />
 				<input type="firstname" className="form-control" placeholder="Prénom" required 

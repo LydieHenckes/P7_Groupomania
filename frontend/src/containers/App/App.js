@@ -18,6 +18,7 @@ import  './App.css';
 const App = () => {
   const [firstname, setFirstname] = useState('');
 	const [lastname, setLastname] = useState('');
+  const [userId, setUserId] = useState(null);
 
  // const isMounted = useIsMounted();
 
@@ -26,9 +27,7 @@ const App = () => {
       } */
 	
     useEffect(() => {
-    
-   // if (firstname!=='') return;
-		(
+  	(
 			async () => {
 
 				const res = await fetch(API_AUTH_AUTHUSER, {
@@ -40,8 +39,8 @@ const App = () => {
         
         if (content.hasOwnProperty('firstName')) {
           setFirstname(content.firstName);
-        
           setLastname(content.lastName);
+          setUserId(content.userId);
         }
 			 
 			}

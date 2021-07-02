@@ -9,13 +9,6 @@
 	flex-direction: column;
 
 	border: 1px solid rgb(59, 59, 97);
-/*
-	width: 50%;
-	position: absolute;
-	top: 10%;
-	left: 50%;
-	transform: translateX(-50%);
-	*/
 }
 
 .form__item {
@@ -27,14 +20,4 @@
 
 .form__item input {
 	width: 450px;
-}
-
-.form__label {
-
-}
-.form__input {
-
-}
-.form__button {
-
 }
