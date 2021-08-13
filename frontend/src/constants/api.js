@@ -8,6 +8,8 @@ const GMP_LOGIN = 'login';
 const GMP_SIGNUP = 'signup';
 const GMP_AUTHUSER = 'user';
 const GMP_LOGOUT = 'logout';
+const GMP_LIKE = 'like';
+const GMP_DISLIKE = 'dislike';
 
 const GPM_USERS = 'users';
 const GPM_POSTS = 'posts';
@@ -20,5 +22,8 @@ export const API_AUTH_SIGNUP = GPM_ROOT + GPM_AUTH + GMP_SIGNUP;
 export const API_AUTH_AUTHUSER = GPM_ROOT + GPM_AUTH + GMP_AUTHUSER;
 export const API_AUTH_LOGOUT = GPM_ROOT + GPM_AUTH + GMP_LOGOUT;
 export const API_COMMENTS = GPM_ROOT + GPM_COMMENTS;
+export const API_POSTLIKE = GPM_ROOT + GPM_POSTS +'/'+ GMP_LIKE;
+export const API_POSTDISLIKE = GPM_ROOT + GPM_POSTS +'/'+ GMP_DISLIKE;
+
 
 

@@ -12,7 +12,7 @@ import  '../App/App.css';
 import styles from './ForumPage.module.css';
 
 
-const ForumPage = ({ setErrorApi, firstname, lastname }) => {
+const ForumPage = ({ setErrorApi, firstname, lastname, userId }) => {
 	const [posts, setPosts] = useState(null);
 
 	const getResource = async (url) => {
@@ -46,11 +46,6 @@ const ForumPage = ({ setErrorApi, firstname, lastname }) => {
 		getResource(API_POSTS);
 	}, []) //
 
-	/*
-	if (!firstname) {
-		return <Redirect to="/login"/>;
-	}
-	*/
 	
 	return (
 		<div className = 'wrapper'>
@@ -65,7 +60,7 @@ const ForumPage = ({ setErrorApi, firstname, lastname }) => {
 				 }
 			</div>
 			{firstname && <div>Nouvel post</div>} 
-			{firstname && posts && <PostsList posts = {posts}/>}
+			{firstname && posts && <PostsList posts = {posts} userId = {userId}/>}
 		</div>
 	)
 }

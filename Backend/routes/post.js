@@ -2,6 +2,9 @@
 
 const express = require('express');
 
+// importation de middleware d'authéntification
+const auth = require('../middleware/auth');
+
 // utilisation de la classe express.Router pour créer des gestionnaires de route pour les posts
 const router = express.Router();
 
@@ -26,8 +29,8 @@ router.put('/:id',  postCtrl.modifyPost);
 //suppression d'un post
 router.delete('/:id', postCtrl.deletePost);
 
-//like d'un post
-router.post('/like', postCtrl.likePost);
+//like d'un post //auth,
+router.post('/like',  postCtrl.likePost);
 
 //dislike d'un post
 router.post('/dislike', postCtrl.dislikePost);

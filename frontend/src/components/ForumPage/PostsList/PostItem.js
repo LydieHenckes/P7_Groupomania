@@ -1,32 +1,56 @@
+import { useState, useEffect } from 'react';
+import cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import CommentsList from '../CommentsList/CommentsList';
+import{ postApiObjet } from '../../../utils/network';
+import { API_POSTLIKE, API_POSTDISLIKE } from '../../../constants/api';
 import styles from './PostsList.module.css';
 
-const PostItem = ({post}) => {
+const PostItem = ({post, userId}) => {
+	const [liked, setLiked] = useState(false);
+	const [likeCount, setLikeCount] = useState(null);
+	const [dislikeCount, setDislikeCount] = useState(null);
 
-	const handleLikePost = () => {
+	const handleLikePost = async () => {
 		// envoyer la requête post avec
-		/*
-		localhost:3000/api/posts/like
-		{
-		"userId" : "3",
-		"postId" : "1"
+		const body = {
+			userId: userId,
+			postId: post.postId
 		}
-		*/
-		alert('like');
+		const res = await postApiObjet(API_POSTLIKE, body);
+		if (res) {
+			setLiked(true);
+		   setLikeCount(res.likeCount);
+		   setDislikeCount(res.dislikeCount);
+		} else {
+
+		};
+
 	}
 
-	const handleDislikePost = () => {
+	const handleDislikePost = async () => {
 		// envoyer la requête post avec
-		/*
-		localhost:3000/api/posts/dislike
-		{
-		"userId" : "3",
-		"postId" : "1"
+		const body = {
+			userId: userId,
+			postId: post.postId
 		}
-		*/
-		alert('dislike');
+		const res = await postApiObjet(API_POSTDISLIKE, body);
+		if (res) {
+			setLiked(true);
+		   setLikeCount(res.likeCount);
+		   setDislikeCount(res.dislikeCount);
+		} else {
+
+		};
 	}
+
+	// const likeCountLiked = (liked) ? post.likeCount+1 : post.likeCount;
+	const likeCountLiked = post.likeCount;
+
+	useEffect(() => {
+		setLikeCount(post.likeCount);
+		setDislikeCount(post.dislikeCount);
+	}, []) //
 
 	return (
 		<>
@@ -54,8 +78,8 @@ const PostItem = ({post}) => {
 			</p>
 
 			<div className = {styles.item__likes}>
-				<div onClick = {handleLikePost}><i class="far fa-thumbs-up"></i>{` ${post.likeCount}`}</div>
-				<div onClick = {handleDislikePost}><i class="far fa-thumbs-down"></i>{` ${post.dislikeCount}`}</div>
+				<div onClick = {handleLikePost}><i class="far fa-thumbs-up"></i> {likeCount} </div>
+				<div onClick = {handleDislikePost}><i class="far fa-thumbs-down"></i>{` ${dislikeCount}`}</div>
 			</div>
 
 			<div className = {styles.item__comments}>

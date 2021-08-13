@@ -1,4 +1,4 @@
-import LogInPage from '../containers/LogInPage/LogInPage';
+/*import LogInPage from '../containers/LogInPage/LogInPage';
 import RegisterPage from '../containers/LogInPage/RegisterPage';
 import ForumPage from '../containers/FomumPage/ForumPage';
 import NotFoundPage from '../containers/NotFoundPage/NotFoundPage';
@@ -39,3 +39,26 @@ const routesConfig = [
 ]
 
 export default routesConfig;
+
+*/
+
+
+  // B App.js
+  // component={route.component} 
+  /*
+        <BrowserRouter>
+        <Header />
+
+        <Switch>
+          {routesConfig.map((route, index)=> (
+            <Route 
+              key = {index}
+              path={route.path} 
+              exact = {route.exact}
+              component={route.component} 
+            />
+          ))}
+        </Switch>
+      </BrowserRouter>
+  */
+ // 

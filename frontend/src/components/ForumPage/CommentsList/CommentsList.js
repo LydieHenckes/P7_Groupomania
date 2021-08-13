@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './CommentsList.module.css';
 
 const CommentsList = ({postId}) => {
-	const [comments, setComments] = useState(null);
+	const [comments, setComments] = useState([]);
 
 	const getComments = async (url) => {
 		const res = await getApiResource(url);
@@ -35,14 +35,17 @@ const CommentsList = ({postId}) => {
 
 	useEffect(() => {
 		getComments(API_COMMENTS+`/${postId}`);
-	}, [comments]) //
-
+	}, []) //
+/*
+	if (!comments) {
+		return false
+	}*/
 	return (
-		<>
-			{comments && 
+		
+			
 				<ul className = {styles.comments__container}>
 					{comments.map((comment) => 
-						<li className = {styles.comment}>
+						<li className = {styles.comment} key = {comment.commentId}>
 							<div className = {styles.comment__frame}>
 								<div className = {styles.comment__autorimg}>
 									{comment.userPhotourl 
@@ -64,8 +67,8 @@ const CommentsList = ({postId}) => {
 						</li>
 					)}
 				</ul>
-			}
-		</>
+			
+		
 	)
 }
 

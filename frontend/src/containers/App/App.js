@@ -48,37 +48,20 @@ const App = () => {
 
 	}) 
   
-  //
-  // component={route.component} 
-  /*
-        <BrowserRouter>
-        <Header />
 
-        <Switch>
-          {routesConfig.map((route, index)=> (
-            <Route 
-              key = {index}
-              path={route.path} 
-              exact = {route.exact}
-              component={route.component} 
-            />
-          ))}
-        </Switch>
-      </BrowserRouter>
-  */
- // 
   return (
     <>
       <BrowserRouter>
       
-        <Header firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname} />
+        <Header firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId} />
 
         <Switch>
-          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname}/>}/>
+          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId}/>}/>
           <Route path = "/login" exact component= {() => <LogInPage firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname}/>}/>
           <Route path = "/register" exact component= {RegisterPage}/>
           <Route path = "/users" exact component= {TeamPage}/>
           <Route path = "/users/:id" exact component= {PersonPage}/>
+          <Route path = "/profil" exact component= {() => <TeamPage firstname = {firstname} lastname = {lastname} userId = {userId} />}/>
           <Route path = "*" exact component= {NotFoundPage}/>
           
         </Switch>

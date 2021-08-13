@@ -129,7 +129,7 @@ exports.signup = (req, res, next) => {
  };
 
  exports.logout = (req, res, next) => {
-	 console.log('Ici');
+	 
 	 res.cookie('jwt', '', {maxAge: 0});
 	 res.send({message: 'success'});
  };
