@@ -32,6 +32,7 @@ exports.signup = (req, res, next) => {
 					lastName: user.lastname,
 					isAdmin: user.isadmin,
 					isDeleted: user.isdeleted,
+					photourl: user.photourl,
 					token: jwt.sign(
 						{ userId: user.id,
 						  isadmin: user.isadmin,
@@ -86,6 +87,7 @@ exports.signup = (req, res, next) => {
 				 lastName: user.lastname,
 				 isAdmin: user.isadmin,
 				 isDeleted: user.isdeleted,
+				 photourl: user.photourl,
 				 token: token // это можно не отсылать
 			  });
 			})

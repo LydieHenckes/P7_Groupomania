@@ -122,100 +122,160 @@ exports.deleteComment = (req, res, next) => {
 
 //like d'un comment
 exports.likeComment = (req, res, next) => {
-		// ajouter contrôle si il y a une ligne dans dislikes
-		db.CommentDislike.findOne({
-			where: {
-				CommentId: req.body.commentId,
-				UserId: req.body.userId
-			}
-		})
-		.then(commentdislike => {
-			if (!commentdislike) {
-				// création d'un comment like
-				db.CommentLike.findOrCreate({
-					where: {
-						CommentId: req.body.commentId,
-						UserId: req.body.userId
-					}
-				})
-					.then(([commentlike, created]) => {
-						//  si il y avait un like - suppression created = false
-						if (created) {
-							res.status(201).json({ 
-								isCreated : created,
-								isDeleted : false,
-								commentId: commentlike.CommentId, 
-								userId: commentlike.UserId,
-							})
-						} else {
-							db.CommentLike.destroy( {where: {id: commentlike.id}} )
-								.then(() => {
-									res.status(201).json({ 
-										isCreated : false,
-										isDeleted : true,
-									})
-								})
-								.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
-						}
-					})
-					.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
-			} else {
-				// on ne peut pas creer un like, puisque il y a déjà un dislike
-				res.status(201).json({ 
-					isCreated : false,
-					isDeleted : false,
-				})
-			}
-		})
-		.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
 
-};
-
-//dislike d'un comment
-exports.dislikeComment = (req, res, next) => {
-	db.CommentLike.findOne({
+	// ajouter contrôle si il y a une ligne dans dislikes
+	db.CommentDislike.findOne({
 		where: {
 			CommentId: req.body.commentId,
 			UserId: req.body.userId
 		}
 	})
-	.then(commentlike => {
-		if (!commentlike) {
-			db.CommentDislike.findOrCreate({
+	.then(commentdislike => {
+		if (!commentdislike) {
+			// si il n'y avait pas dislike - création d'un like et retourner likeCount et dislikeCount
+			// si il y avait un like - retourner likeCount et dislikeCount
+			db.CommentLike.findOrCreate({
 				where: {
 					CommentId: req.body.commentId,
 					UserId: req.body.userId
 				}
 			})
-				.then(([commentdislike, created]) => {
-					if (created) {
-						res.status(201).json({ 
-							isCreated : created,
-							isDeleted : false,
-							commentId: commentdislike.CommentId, 
-							userId: commentdislike.UserId,
-						})
-					} else {
-						db.CommentDislike.destroy( {where: {id: commentdislike.id}} )
-							.then(() => {
-								res.status(201).json({ 
-									isCreated : false,
-									isDeleted : true
-								})
+			.then(([commentlike, created]) => {
+						const { QueryTypes } = require('sequelize');
+						db.sequelize.query(`SELECT
+							( SELECT COUNT(*) FROM comment_likes WHERE comment_likes.comment_id =${req.body.commentId} ) AS commentlikeCount,
+							( SELECT COUNT(*) FROM comment_dislikes WHERE comment_dislikes.comment_id = ${req.body.commentId} ) AS commentdislikeCount
+						`, { type: QueryTypes.SELECT })
+						.then(commentlikesCount => {
+							res.status(201).json({ 
+								isCreated : created,
+								isDeleted: false,
+								commentId: commentlike.CommentId, 
+								userId: commentlike.UserId,
+								commentlikeCount: commentlikesCount[0].commentlikeCount,
+								commentdislikeCount: commentlikesCount[0].commentdislikeCount
 							})
-							.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
-					}
-				})
-				.catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
-		
-		} else {
-			// on ne peut pas creer un comment dislike, puisque il y a déjà un comment like
-			res.status(201).json({ 
-				isCreated : false,
-				isDeleted : false,
+						})
+						.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
 			})
+			.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+		} else {
+			// il faut supprimer dislike
+			db.CommentDislike.destroy( {where: {id: commentdislike.id}} )
+				.then(() => {
+					// si il n'y avait pas dislike - création d'un like et retourner likeCount et dislikeCount
+					// si il y avait un like - retourner likeCount et dislikeCount
+					db.CommentLike.findOrCreate({
+						where: {
+							CommentId: req.body.commentId,
+							UserId: req.body.userId
+						}
+					})
+					.then(([commentlike, created]) => {
+								console.log('----**********************-------------------');
+								const { QueryTypes } = require('sequelize');
+								db.sequelize.query(`SELECT
+									( SELECT COUNT(*) FROM comment_likes WHERE comment_likes.comment_id =${req.body.commentId} ) AS commentlikeCount,
+									( SELECT COUNT(*) FROM comment_dislikes WHERE comment_dislikes.comment_id = ${req.body.commentId} ) AS commentdislikeCount
+								`, { type: QueryTypes.SELECT })
+								.then(commentlikesCount => {
+
+									res.status(201).json({ 
+										isCreated : created,
+										isDeleted: true,
+										commentId: commentlike.CommentId, 
+										userId: commentlike.UserId,
+										commentlikeCount: commentlikesCount[0].commentlikeCount,
+										commentdislikeCount: commentlikesCount[0].commentdislikeCount
+									})
+								})
+								.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+					})
+					.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+				})
+				.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
 		}
 	})
+	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+
+};
+
+//dislike d'un comment
+exports.dislikeComment = (req, res, next) => {
+
+		//  contrôle si il y a une ligne dans likes
+		db.CommentLike.findOne({
+			where: {
+				CommentId: req.body.commentId,
+				UserId: req.body.userId
+			}
+		})
+		.then(commentlike => {
+			if (!commentlike) {
+				// si il n'y avait pas dislike - création d'un dislike et retourner likeCount et dislikeCount
+				// si il y avait un dislike - retourner likeCount et dislikeCount
+				db.CommentDislike.findOrCreate({
+					where: {
+						CommentId: req.body.commentId,
+						UserId: req.body.userId
+					}
+				})
+				.then(([commentdislike, created]) => {
+							const { QueryTypes } = require('sequelize');
+							db.sequelize.query(`SELECT
+								( SELECT COUNT(*) FROM comment_likes WHERE comment_likes.comment_id =${req.body.commentId} ) AS commentlikeCount,
+								( SELECT COUNT(*) FROM comment_dislikes WHERE comment_dislikes.comment_id = ${req.body.commentId} ) AS commentdislikeCount
+							`, { type: QueryTypes.SELECT })
+							.then(commentlikesCount => {
+								res.status(201).json({ 
+									isCreated : created,
+									isDeleted: false,
+									commentId: commentdislike.CommentId, 
+									userId: commentdislike.UserId,
+									commentlikeCount: commentlikesCount[0].commentlikeCount,
+									commentdislikeCount: commentlikesCount[0].commentdislikeCount
+								})
+							})
+							.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+				})
+				.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+			} else {
+				// il faut supprimer like
+				db.CommentLike.destroy( {where: {id: commentlike.id}} )
+					.then(() => {
+						// si il n'y avait pas dislike - création d'un dislike et retourner likeCount et dislikeCount
+						// si il y avait un dislike - retourner likeCount et dislikeCount
+						db.CommentDislike.findOrCreate({
+							where: {
+								CommentId: req.body.commentId,
+								UserId: req.body.userId
+							}
+						})
+						.then(([commentdislike, created]) => {
+									const { QueryTypes } = require('sequelize');
+									db.sequelize.query(`SELECT
+										( SELECT COUNT(*) FROM comment_likes WHERE comment_likes.comment_id =${req.body.commentId} ) AS commentlikeCount,
+										( SELECT COUNT(*) FROM comment_dislikes WHERE comment_dislikes.comment_id = ${req.body.commentId} ) AS commentdislikeCount
+									`, { type: QueryTypes.SELECT })
+									.then(commentlikesCount => {
+										res.status(201).json({ 
+											isCreated : created,
+											isDeleted: true,
+											commentId: commentdislike.CommentId, 
+											userId: commentdislike.UserId,
+											commentlikeCount: commentlikesCount[0].commentlikeCount,
+											commentdislikeCount: commentlikesCount[0].commentdislikeCount
+										})
+									})
+									.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+						})
+						.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+					})
+					.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+			}
+		})
+		.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
+
 };
 
 

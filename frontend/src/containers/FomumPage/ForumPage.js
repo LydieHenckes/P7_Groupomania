@@ -12,7 +12,7 @@ import  '../App/App.css';
 import styles from './ForumPage.module.css';
 
 
-const ForumPage = ({ setErrorApi, firstname, lastname, userId }) => {
+const ForumPage = ({ setErrorApi, firstname, lastname, userId, userPhotourl }) => {
 	const [posts, setPosts] = useState(null);
 
 	const getResource = async (url) => {
@@ -60,7 +60,7 @@ const ForumPage = ({ setErrorApi, firstname, lastname, userId }) => {
 				 }
 			</div>
 			{firstname && <div>Nouvel post</div>} 
-			{firstname && posts && <PostsList posts = {posts} userId = {userId}/>}
+			{firstname && posts && <PostsList posts = {posts} userId = {userId} userPhotourl = {userPhotourl} />}
 		</div>
 	)
 }

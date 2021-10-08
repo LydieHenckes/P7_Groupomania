@@ -33,28 +33,7 @@ const LogIn = ({ firstname, setFirstname, setLastname }) => {
 	  setLastname(content.lastName);
 	  
 
-	/*
-		let body = { 
-			email: email,
-			password: password,
-		};
-		const res = await postApiObjet(API_AUTH_LOGIN, body);
-		if (res) {
-			if (!res.error) {
-				setToken(res.token);
-			//	console.log(res.cookie);
-				alert(res.token);
-				// открыть страницу
-				window.location = '/forum';
-			} else {
-				// обнулить поля ввода и вывести ошибку пользователю
-				alert('!!!');
-			};
-			setErrorApi(false);
-		} else {
-			setErrorApi(true);
-		};
-		*/
+
 	};
 
 	if (redirect) {

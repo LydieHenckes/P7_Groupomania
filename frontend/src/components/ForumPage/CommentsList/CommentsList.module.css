@@ -1,7 +1,6 @@
 .comments__container {
 	display: flex;
 	flex-direction: column;
-
 	list-style-type: none;
 }
 
@@ -12,7 +11,7 @@
 	padding: 0.2em;
 	display: flex;
 	flex-direction: row;
-	
+
 }
 
 .comment__frame {
@@ -109,4 +108,43 @@
 
 .comment__dislikes  :hover {
 	font-weight: bold;
+}
+
+/*New Comment*/
+
+.commentNew {
+	display: flex;
+	align-items: center;
+	padding: 0.2em;
+	margin: 0.4em 0.2em 0.2em 0.2em;
+
+}
+
+
+.commentNew__frame {
+	border-style: none;
+	background-color: var(--color-background);
+	border-radius: 10px;
+	height: 32px !important;
+	flex-grow: 1;
+	margin-right: 0.3em;
+	padding: 0.2em;
+	padding-left: 0.5em;
+
+}
+
+.commentNew__frame:focus {
+	border: 1px solid red !important;
+
+}
+
+button {
+	border-radius: 50%;
+	background-color: var(--color-btn);
+	color: white;
+}
+
+.commentNew__btn {
+	
+	border-radius: 50%;
 }

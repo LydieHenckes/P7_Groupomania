@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import CommentsList from '../CommentsList/CommentsList';
 import{ postApiObjet } from '../../../utils/network';
 import { API_POSTLIKE, API_POSTDISLIKE } from '../../../constants/api';
 import styles from './PostsList.module.css';
 
-const PostItem = ({post, userId}) => {
+const PostItem = ({post, userId, userPhotourl}) => {
 	const [liked, setLiked] = useState(false);
 	const [likeCount, setLikeCount] = useState(null);
 	const [dislikeCount, setDislikeCount] = useState(null);
@@ -44,13 +43,11 @@ const PostItem = ({post, userId}) => {
 		};
 	}
 
-	// const likeCountLiked = (liked) ? post.likeCount+1 : post.likeCount;
-	const likeCountLiked = post.likeCount;
-
+	
 	useEffect(() => {
 		setLikeCount(post.likeCount);
 		setDislikeCount(post.dislikeCount);
-	}, []) //
+	}, []); //
 
 	return (
 		<>
@@ -83,7 +80,7 @@ const PostItem = ({post, userId}) => {
 			</div>
 
 			<div className = {styles.item__comments}>
-				<CommentsList postId = {post.postId} />
+				<CommentsList postId = {post.postId} userId = {userId} userPhotourl = {userPhotourl} />
 			</div>
 
 		</>
@@ -91,7 +88,9 @@ const PostItem = ({post, userId}) => {
 }
 
 PostItem.propTypes = {
-	post: PropTypes.object
+	post: PropTypes.object,
+	userId: PropTypes.number,
+	userPhotourl: PropTypes.string
 }
 
 export default PostItem;

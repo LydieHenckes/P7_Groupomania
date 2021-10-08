@@ -19,6 +19,7 @@ const App = () => {
   const [firstname, setFirstname] = useState('');
 	const [lastname, setLastname] = useState('');
   const [userId, setUserId] = useState(null);
+  const [userPhotourl, setUserPhotourl] = useState('');
 
  // const isMounted = useIsMounted();
 
@@ -35,12 +36,13 @@ const App = () => {
 					credentials: 'include',
 			  });
 			  const content = await res.json();
-        console.log('content22: ',content);  
+       // console.log('content22: ',content);  
         
         if (content.hasOwnProperty('firstName')) {
           setFirstname(content.firstName);
           setLastname(content.lastName);
           setUserId(content.userId);
+          setUserPhotourl(content.photourl);
         }
 			 
 			}
@@ -56,12 +58,12 @@ const App = () => {
         <Header firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId} />
 
         <Switch>
-          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId}/>}/>
+          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId} userPhotourl = {userPhotourl} />}/>
           <Route path = "/login" exact component= {() => <LogInPage firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname}/>}/>
           <Route path = "/register" exact component= {RegisterPage}/>
           <Route path = "/users" exact component= {TeamPage}/>
           <Route path = "/users/:id" exact component= {PersonPage}/>
-          <Route path = "/profil" exact component= {() => <TeamPage firstname = {firstname} lastname = {lastname} userId = {userId} />}/>
+          <Route path = "/profil" exact component= {() => <TeamPage firstname = {firstname} lastname = {lastname} userId = {userId} userPhotourl = {userPhotourl} />}/>
           <Route path = "*" exact component= {NotFoundPage}/>
           
         </Switch>

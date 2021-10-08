@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
+
+import CommentItem from './CommentItem';
+import CommentNew from './CommentNew';
 import{ getApiResource } from '../../../utils/network'
 import { API_COMMENTS } from '../../../constants/api'
 import PropTypes from 'prop-types';
 import styles from './CommentsList.module.css';
 
-const CommentsList = ({postId}) => {
+const CommentsList = ({postId, userId, userPhotourl}) => {
 	const [comments, setComments] = useState([]);
+	const [isCommentAdded, setIsCommentAdded] = useState(false); 
 
 	const getComments = async (url) => {
 		const res = await getApiResource(url);
@@ -28,52 +32,31 @@ const CommentsList = ({postId}) => {
 				}
 			})
 			setComments(commentsList);
-		
+			
 		} else {
 		}
 	}
 
 	useEffect(() => {
 		getComments(API_COMMENTS+`/${postId}`);
-	}, []) //
-/*
-	if (!comments) {
-		return false
-	}*/
+	}, [isCommentAdded]) //
+
 	return (
-		
-			
-				<ul className = {styles.comments__container}>
-					{comments.map((comment) => 
-						<li className = {styles.comment} key = {comment.commentId}>
-							<div className = {styles.comment__frame}>
-								<div className = {styles.comment__autorimg}>
-									{comment.userPhotourl 
-										? <img src = {comment.userPhotourl} alt = {`Photo de  ${comment.firstname} ${comment.lastname}`} />
-										: <i class="fas fa-user"></i>
-									}
-								</div>
-								<div className = {styles.comment__textframe}>
-									<div className = {styles.comment__textframe__autorname}>
-										{comment.firstname} {comment.lastname}
-									</div>
-									<div  className = {styles.comment__textframe__content}>
-										{comment.content}
-									</div>
-								</div>
-								<div className = {styles.comment__likes}><span><i class="far fa-thumbs-up"></i>{` ${comment.commentlikeCount}`}</span></div>
-								<div className = {styles.comment__dislikes}><span><i class="far fa-thumbs-down"></i>{` ${comment.commentdislikeCount}`}</span></div>
-							</div>
-						</li>
-					)}
-				</ul>
-			
-		
+		<ul className = {styles.comments__container}>
+			{comments.map((comment) => 
+				<li className = {styles.comment} key = {comment.commentId}>
+					<CommentItem comment = {comment} userId = {userId}  />
+				</li>
+			)}
+			<CommentNew postId = {postId} userId = {userId} userPhotourl = {userPhotourl} setIsCommentAdded = {setIsCommentAdded}  />
+		</ul>
 	)
 }
 
 CommentsList.propTypes = {
-	postId: PropTypes.number
+	postId: PropTypes.number,
+	userId: PropTypes.number,
+	userPhotourl: PropTypes.string
 }
 
 export default CommentsList;
