@@ -192,8 +192,8 @@ exports.createPost = (req, res, next) => {
             })
             .then(post => {
 					// проверка на наличие файла, если есть - запись в базу
-					if (1) {	//(req.file)
-						const filename = 'filename';
+					if (req.file) {	//(req.file)
+						const filename = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
 						//`${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
 						db.PostPhoto.create({
 							PostId: post.id,
@@ -244,6 +244,7 @@ exports.deletePost = (req, res, next) => {
 					.then(() => res.status(200).json({ message: "Post supprimé !" }))
 					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
 	/*  // changer pour ce code si il y a des vrais images
+	
 			if (postPhoto) {
 				const filename = postPhoto.photourl.split('/images/')[1];
 				fs.unlink(`images/${filename}`, () => {

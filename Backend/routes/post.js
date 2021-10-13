@@ -5,6 +5,9 @@ const express = require('express');
 // importation de middleware d'authéntification
 const auth = require('../middleware/auth');
 
+// importation de middleware pour les images
+const multer = require('../middleware/multer-config');
+
 // utilisation de la classe express.Router pour créer des gestionnaires de route pour les posts
 const router = express.Router();
 
@@ -21,7 +24,7 @@ router.get('/:id', postCtrl.getOnePost);
 router.get('/:id/user', postCtrl.getPostsByUserId);
 
 // crée un nouveau post dans la base posts
-router.post('/', postCtrl.createPost);
+router.post('/', multer, postCtrl.createPost);
 
 // modification de post 
 router.put('/:id',  postCtrl.modifyPost);

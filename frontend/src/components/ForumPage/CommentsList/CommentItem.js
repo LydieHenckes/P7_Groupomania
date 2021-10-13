@@ -53,22 +53,28 @@ const CommentItem = ({comment, userId}) => {
 				<div className = {styles.comment__autorimg}>
 					{comment.userPhotourl 
 						? <img src = {comment.userPhotourl} alt = {`Photo de  ${comment.firstname} ${comment.lastname}`} />
-						: <i class="fas fa-user"></i>
+						: <i className="fas fa-user"></i>
 					}
 				</div>
 				<div className = {styles.comment__textframe}>
 					<div className = {styles.comment__textframe__autorname}>
 						{comment.firstname} {comment.lastname}
 					</div>
+					
+					{comment.photourl && 
+					<div className = {styles.comment__textframe__img}>
+						<img src = {comment.photourl} alt = {`image de comment`} />
+					</div>
+					}
 					<div  className = {styles.comment__textframe__content}>
 						{comment.content}
 					</div>
 				</div>
 				<div className = {styles.comment__likes}>
-					<span onClick = {handleLikeComment}><i class="far fa-thumbs-up"></i>{` ${commentlikeCount}`}</span>
+					<span onClick = {handleLikeComment}><i className="far fa-thumbs-up"></i>{` ${commentlikeCount}`}</span>
 				</div>
 				<div className = {styles.comment__dislikes}>
-					<span onClick = {handleDislikeComment}><i class="far fa-thumbs-down"></i>{` ${commentdislikeCount}`}</span>
+					<span onClick = {handleDislikeComment}><i className="far fa-thumbs-down"></i>{` ${commentdislikeCount}`}</span>
 				</div>
 			</div>
 		</>

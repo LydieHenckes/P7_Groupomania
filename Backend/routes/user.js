@@ -2,6 +2,13 @@
 
 const express = require('express');
 // const validatePassword = require('../middleware/validatePassword');  validatePassword,
+
+// importation de middleware d'authéntification
+const auth = require('../middleware/auth');
+
+// importation de middleware pour les images
+const multer = require('../middleware/multer-config');
+
 // utilisation de la classe express.Router pour créer des gestionnaires de route pour les users
 const router = express.Router();
 

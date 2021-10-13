@@ -31,10 +31,10 @@ const Header = ({ firstname, setFirstname, setLastname, setUserId }) => {
 		// <i class="fas fa-user-cog"></i>
 		menu = (
 			<ul className = {styles.menu}>
-				<li><Link to="/" exact><i class="far fa-comments"></i> Forum</Link></li>
-				<li><Link to="/users" exact><i class="fas fa-users"></i> Team</Link></li>
-				<li><Link to="/profil" exact><i class="fas fa-user-cog"></i> Profil</Link></li>
-				<li><Link to="/login" exact onClick={logout}><i class="fas fa-power-off"></i> Se déconnecter</Link></li>
+				<li><Link to="/" exact><i className="far fa-comments"></i> Forum</Link></li>
+				<li><Link to="/users" exact><i className="fas fa-users"></i> Team</Link></li>
+				<li><Link to="/profil" exact><i className="fas fa-user-cog"></i> Profil</Link></li>
+				<li><Link to="/login" exact onClick={logout}><i className="fas fa-power-off"></i> Se déconnecter</Link></li>
 			</ul>
 		)
 	}

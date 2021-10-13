@@ -42,6 +42,29 @@ export const postApiObjet = async (url, body) => {
 	}
 }
 
+export const postApiObjetWithImage = async (url, data) => {
+	try {
+		const res = await fetch(url, {
+			method: "POST",
+		//	headers: {
+		//	"Content-Type": 'multipart/form-data'
+		//	},
+			credentials: 'include',
+			body: data
+		});
+
+		if (!res.ok) {
+			console.error('Could not fetch. ', res.status);
+			return false;
+		};
+		return await res.json();
+	} catch(error) {
+		console.error('Could not fetch. ', error.message);
+		return false;
+	}
+}
+
+
 /**
  * Change URL (HTTP sur HTTPS)
  * @param {String} url - url qui va être changé

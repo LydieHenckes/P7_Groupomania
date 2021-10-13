@@ -8,6 +8,8 @@ const postRoutes = require('./routes/post');
 const commentRoutes = require('./routes/comment');
 const cors = require('cors');
 
+const path = require('path');
+
 // déclaration de l'application express
 const app = express();
 /*
@@ -37,7 +39,7 @@ const db = require("./models");
 db.sequelize.sync();
 
 // définition des routes
-
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/api/auth", userRoutes);
 app.use("/api/users", profilRoutes);
 app.use('/api/posts', postRoutes); 

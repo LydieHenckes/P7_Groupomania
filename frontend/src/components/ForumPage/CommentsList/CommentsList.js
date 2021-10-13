@@ -32,14 +32,14 @@ const CommentsList = ({postId, userId, userPhotourl}) => {
 				}
 			})
 			setComments(commentsList);
-			
+			setIsCommentAdded(false); //!!!
 		} else {
 		}
 	}
 
 	useEffect(() => {
 		getComments(API_COMMENTS+`/${postId}`);
-	}, [isCommentAdded]) //
+	}, [isCommentAdded]);
 
 	return (
 		<ul className = {styles.comments__container}>

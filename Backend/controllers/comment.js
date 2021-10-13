@@ -46,9 +46,9 @@ exports.createComment = (req, res, next) => {
 					PostId: post.id
             })
 				.then(comment => {
-					
-					if (1) {	//(req.file)
-						const filename = 'filename';
+					console.log("dans la partie comment");
+					if (req.file) {	//(req.file)
+						const filename = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
 						//`${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
 						db.CommentPhoto.create({
 							CommentId: comment.id,
@@ -66,7 +66,7 @@ exports.createComment = (req, res, next) => {
 								photourl: commentPhoto.photourl,
 							})
 						})
-						.catch(error => res.status(500).json({ error:"Erreur de la base de données ! " + error }));
+						.catch(error => res.status(500).json({ error:"Erreur de la base de données photo ! " + error }));
 					} else {
 						res.status(201).json({ 
 							commentId: comment.id,
@@ -83,7 +83,7 @@ exports.createComment = (req, res, next) => {
 			  })
 			 .catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
 		})
-	 .catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
+	 .catch(error => res.status(500).json({ error:"Erreur de la base de données 2!" }));
 };
 
 exports.deleteComment = (req, res, next) => {

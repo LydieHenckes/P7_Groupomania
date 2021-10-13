@@ -31,6 +31,7 @@
 	align-items: center;
 	position: relative;
 	overflow: hidden;
+
 }
 
 .comment__autorimg img {
@@ -57,6 +58,25 @@
 
 .comment__textframe__content {
 	font-size: 0.9em;
+}
+
+.comment__textframe__img {
+	padding: 0 1em 0 1em;
+	display: flex;
+	justify-content: center;
+	height: 200px;
+	position: relative;
+	width: 60%;
+	text-align: center;
+}
+
+.comment__textframe__img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	top: 0;
+	left: 0;
+	position: absolute;
 }
 
 .comment__likes {
@@ -138,6 +158,31 @@
 
 }
 
+.commentNew__addfile {
+	background-color: var(--color-background);
+	height: 32px;
+	width: 32px;
+	border-radius: 50%;
+	margin-right: 0.3em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+.commentNew__addfile label i {
+	cursor: pointer;
+}
+
+input[type="file"] {
+	display: none;
+}
+.custom-file-upload {
+	border: 1px solid #ccc;
+	display: inline-block;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
 button {
 	border-radius: 50%;
 	background-color: var(--color-btn);
@@ -147,4 +192,11 @@ button {
 .commentNew__btn {
 	
 	border-radius: 50%;
+}
+
+.commentNew__photourl {
+	font-size: 0.8em;
+	font-style: italic;
+
+	margin: 0 0 0.5em 3.5em;
 }

@@ -2,6 +2,12 @@
 
 const express = require('express');
 
+// importation de middleware d'authéntification
+const auth = require('../middleware/auth');
+
+// importation de middleware pour les images
+const multer = require('../middleware/multer-config');
+
 // utilisation de la classe express.Router pour créer des gestionnaires de route pour les users
 const router = express.Router();
 
@@ -15,7 +21,7 @@ router.get('/:id', profilCtrl.getOneUser);
 router.get('/', profilCtrl.getAllUsers);
 
 // modification de l'utilisateur 
-router.put('/:id',  profilCtrl.modifyUser);
+router.put('/:id', multer, profilCtrl.modifyUser);
 
 //suppression d'un utilisateur
 router.delete('/:id', profilCtrl.deleteUser);
