@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 
 import { withErrorApi } from '../../hoc-helpers/withErrorApi'
 import PostsList from '../../components/ForumPage/PostsList/PostsList';
+import PostTest from '../../components/ForumPage/PostsList/PostTest';
+import PostNew from '../../components/ForumPage/PostsList/PostNew';
 import{ getApiResource } from '../../utils/network'
 import { API_POSTS } from '../../constants/api'
 
@@ -14,6 +16,7 @@ import styles from './ForumPage.module.css';
 
 const ForumPage = ({ setErrorApi, firstname, lastname, userId, userPhotourl }) => {
 	const [posts, setPosts] = useState(null);
+	const [isPostAdded, setIsPostAdded] = useState(false);
 
 	const getResource = async (url) => {
 		const res = await getApiResource(url);
@@ -35,6 +38,7 @@ const ForumPage = ({ setErrorApi, firstname, lastname, userId, userPhotourl }) =
 				}
 			})
 			setPosts(postsList);
+			setIsPostAdded(false);
 			setErrorApi(false);
 		} else {
 			setErrorApi(true);
@@ -44,8 +48,8 @@ const ForumPage = ({ setErrorApi, firstname, lastname, userId, userPhotourl }) =
 
 	useEffect(() => {
 		getResource(API_POSTS);
-	}, []) //
-
+	}, [isPostAdded]) //
+// 
 	
 	return (
 		<div className = 'wrapper'>
@@ -59,7 +63,7 @@ const ForumPage = ({ setErrorApi, firstname, lastname, userId, userPhotourl }) =
 					</div>
 				 }
 			</div>
-			{firstname && <div>Nouvel post</div>} 
+			{firstname && <PostNew userId = {userId} userPhotourl = {userPhotourl} setIsPostAdded = {setIsPostAdded} />} 
 			{firstname && posts && <PostsList posts = {posts} userId = {userId} userPhotourl = {userPhotourl} />}
 		</div>
 	)

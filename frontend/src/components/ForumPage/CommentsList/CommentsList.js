@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 
 import CommentItem from './CommentItem';
 import CommentNew from './CommentNew';
-import{ getApiResource } from '../../../utils/network'
-import { API_COMMENTS } from '../../../constants/api'
+import{ getApiResource } from '../../../utils/network';
+import { API_COMMENTS } from '../../../constants/api';
 import PropTypes from 'prop-types';
 import styles from './CommentsList.module.css';
 
@@ -48,6 +48,7 @@ const CommentsList = ({postId, userId, userPhotourl}) => {
 					<CommentItem comment = {comment} userId = {userId}  />
 				</li>
 			)}
+			
 			<CommentNew postId = {postId} userId = {userId} userPhotourl = {userPhotourl} setIsCommentAdded = {setIsCommentAdded}  />
 		</ul>
 	)

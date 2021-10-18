@@ -1,115 +1,103 @@
-import { useState } from 'react';
+import React, { Component } from 'react';
+//import { useState, Component } from 'react';
 import PropTypes from 'prop-types';
-import { postApiObjet, postApiObjetWithImage } from '../../../utils/network';
+import { postApiObjetWithImage } from '../../../utils/network';
 import { API_COMMENTS } from '../../../constants/api';
 
 import styles from './CommentsList.module.css';
 
-const CommentNew = ({postId, userId, userPhotourl, setIsCommentAdded}) => {
-	const [commentNewContent, setCommentNewContent] = useState('');
-	const [file, setFile] = useState('');
-	
+class CommentNew extends Component {
 
-	const handleSendNewComment = async (event) => {
+	state = {
+		commentNewContent: '',
+		file : ''
+	}
+
+	constructor(props) {
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+		this.handlePicture = this.handlePicture.bind(this);
+		this.handleSendNewComment = this.handleSendNewComment.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleChange(event) {
+		this.setState({commentNewContent: event.target.value});
+	}
+
+	handlePicture (event) {
+		this.setState({file: event.target.files[0]});
+
+	}
+
+	handleClick () {
+		alert('555')
+	}
+	
+	async handleSendNewComment (event)  {
+
 		event.preventDefault();
-		console.log('content envoyé: ', commentNewContent);
 
 		// envoyer la requête post avec
-		if (commentNewContent !=='') {
-// ----------------
+		if (this.state.commentNewContent !=='') {
 			const data = new FormData();
-			data.append('userId', userId);
-			data.append('postId', postId);
-			data.append('content', commentNewContent);
-			if (file) data.append('image', file);
+			data.append('userId', this.props.userId);
+			data.append('postId', this.props.postId);
+			data.append('content', this.state.commentNewContent);
+			if (this.state.file) data.append('image',this.state.file);
 
 			const res = await postApiObjetWithImage(API_COMMENTS, data);
 			if (res) {
-				setCommentNewContent('');
-				setIsCommentAdded(true);
-				setFile('');
+				this.setState({commentNewContent: '', file: ''});
+				this.props.setIsCommentAdded(true);
 			};
-//-----------------------
-	/*		if (file) {
-				const data = new FormData();
-				data.append('userId', userId);
-				data.append('postId', postId);
-				data.append('content', commentNewContent);
-				if (file) data.append('image', file);
-
-				const res = await postApiObjetWithImage(API_COMMENTS, data);
-				if (res) {
-					setCommentNewContent('');
-					setIsCommentAdded(true);
-					setFile('');
-				};
-
-			} else {
-				const body = {
-					userId: userId,
-					postId: postId,
-					content: commentNewContent
-				}
-
-				const res = await postApiObjet(API_COMMENTS, body);
-				if (res) {
-					setCommentNewContent('');
-					setIsCommentAdded(true);
-					setFile('');
-				};
-			}
-			*/
-// ---------------------------
 
 		} else {alert('Message est vide!')}
+		
 	}
 
-	const handleCange = (event) => {
-		setCommentNewContent(event.target.value);
+	render() {
+		const id = 'a' + this.props.postId;
+		return (
+			<>
+				<form onSubmit = {this.handleSendNewComment} >
+					<div className = {styles.commentNew}>
+						<div  className = {styles.comment__autorimg}>
+							{this.props.userPhotourl 
+								? <img src = {this.props.userPhotourl} alt = "Avatar de d'utilisateur" />
+								: <i className="fas fa-user"></i>
+							}
+						</div>
+
+						<div className = {styles.commentNew__addfile} aria-label ="Ajouter une image" role = "button" title = "Ajoutez une image">
+							<label htmlFor={id} className="custom-file-upload">
+								<i className="far fa-image"></i>
+							</label>
+							<input id={id} type="file"
+								name={id}
+								accept=".jpg, .jpeg, .png"
+								onChange={this.handlePicture}
+								onClick = {this.handleClick}
+							/>
+						</div>
+
+						<label htmlFor='content'></label>
+						<textarea className = {styles.commentNew__frame} name='content' placeholder="Votre commentaire..." onChange = {this.handleChange}  value = {this.state.commentNewContent} >
+
+						</textarea>
+						<div className = {styles.commentNew__btn}>
+							<button type="submit" title="Cliquez pour envoyer"><i className="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+						</div>
+					</div>
+
+					<div className= {styles.commentNew__photourl} >
+							{this.state.file && <div>{this.state.file.name}</div>}
+					</div>
+				</form>
+
+			</>
+		)
 	}
-
-	const handlePicture = (event) => {
-
-		setFile(event.target.files[0]);
-	}
-
-	// <i class="far fa-image"></i>
-	return (
-		<>
-			<form onSubmit = {handleSendNewComment}>
-				<div className = {styles.commentNew}>
-					<div  className = {styles.comment__autorimg}>
-						{userPhotourl 
-							? <img src = {userPhotourl} alt = "Avatar de d'utilisateur" />
-							: <i className="fas fa-user"></i>
-						}
-					</div>
-					<div className = {styles.commentNew__addfile} aria-label ="Ajouter une image" role = "button" title = "Ajoutez une image">
-						<label htmlFor="file-upload" className="custom-file-upload">
-							<i className="far fa-image"></i>
-						</label>
-						<input id="file-upload" type="file"
-							name="file"
-							accept=".jpg, .jpeg, .png"
-							onChange={event => handlePicture(event)}
-						/>
-					</div>
-
-
-					<label htmlFor='content'></label>
-					<textarea className = {styles.commentNew__frame} name='content' placeholder="Votre commentaire..." onChange = {handleCange} value = {commentNewContent} >
-
-					</textarea>
-					<div className = {styles.commentNew__btn}>
-						<button type="submit" title="Cliquez pour envoyer"><i className="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-					</div>
-				</div>
-				<div className= {styles.commentNew__photourl} >
-						{file && <div>{file.name}</div>}
-				</div>
-			</form>
-		</>
-	)
 }
 
 CommentNew.propTypes = {
@@ -120,3 +108,4 @@ CommentNew.propTypes = {
 }
 
 export default CommentNew;
+

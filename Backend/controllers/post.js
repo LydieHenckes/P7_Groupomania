@@ -27,6 +27,7 @@ exports.getAllPosts = (req, res, next) => {
 	FROM posts
 	left join post_photos on post_photos.post_id = posts.id 
 	left join users on users.id = posts.user_id 
+	ORDER BY posts.created_at DESC
 	`, { type: QueryTypes.SELECT })
 	.then(posts => {
 		res.status(200).json(posts)
