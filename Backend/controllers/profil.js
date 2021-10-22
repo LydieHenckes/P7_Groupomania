@@ -53,7 +53,7 @@ exports.modifyUser = (req, res, next) => {
 						email: req.body.email,
 						photourl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 					}, {where: {id: req.params.id}})
-						.then(() => res.status(200).json({ message: 'Objet modifié !'}))
+						.then(() => res.status(200).json({ message: "L'utilisateur modifié !"}))
 						.catch(error => res.status(400).json({ error }));
 				})
 

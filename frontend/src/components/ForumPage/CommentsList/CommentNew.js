@@ -18,7 +18,7 @@ class CommentNew extends Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handlePicture = this.handlePicture.bind(this);
 		this.handleSendNewComment = this.handleSendNewComment.bind(this);
-		this.handleClick = this.handleClick.bind(this);
+		//this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleChange(event) {
@@ -30,9 +30,7 @@ class CommentNew extends Component {
 
 	}
 
-	handleClick () {
-		alert('555')
-	}
+	
 	
 	async handleSendNewComment (event)  {
 
@@ -75,9 +73,10 @@ class CommentNew extends Component {
 							</label>
 							<input id={id} type="file"
 								name={id}
+								className = {styles.commentNew__file}
 								accept=".jpg, .jpeg, .png"
 								onChange={this.handlePicture}
-								onClick = {this.handleClick}
+
 							/>
 						</div>
 

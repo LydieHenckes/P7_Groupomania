@@ -71,7 +71,6 @@
 
 .item__img {
 	padding: 0.4em;
-	width: 60%;
 	text-align: center;
 }
 
@@ -128,7 +127,7 @@
 	border-style: none;
 	background-color: var(--color-background);
 	border-radius: 10px;
-	height: 32px !important;
+	min-height: 32px !important;
 	flex-grow: 1;
 	margin-right: 0.3em;
 	padding: 0.2em;

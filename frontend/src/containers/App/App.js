@@ -1,13 +1,14 @@
 //import cn from 'classnames';
-import { useState, useEffect, useIsMounted } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, NavLink, Route } from 'react-router-dom';
-import routesConfig from '../../routes/routesConfig'
+//import routesConfig from '../../routes/routesConfig'
 import LogInPage from '../LogInPage/LogInPage';
 import RegisterPage from '../LogInPage/RegisterPage';
 import ForumPage from '../FomumPage/ForumPage';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import TeamPage from '../TeamPage/TeamPage';
 import PersonPage from '../PersonPage/PersonPage';
+import ProfilPage from '../ProfilPage/ProfilPage';
 import Header from '../../components/Header/Header'
 import { API_AUTH_AUTHUSER } from '../../constants/api'
 
@@ -63,7 +64,7 @@ const App = () => {
           <Route path = "/register" exact component= {RegisterPage}/>
           <Route path = "/users" exact component= {TeamPage}/>
           <Route path = "/users/:id" exact component= {PersonPage}/>
-          <Route path = "/profil" exact component= {() => <TeamPage firstname = {firstname} lastname = {lastname} userId = {userId} userPhotourl = {userPhotourl} />}/>
+          <Route path = "/profil" exact component= {() => <ProfilPage userId = {userId} />}/>
           <Route path = "*" exact component= {NotFoundPage}/>
           
         </Switch>

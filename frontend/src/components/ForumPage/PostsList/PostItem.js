@@ -4,6 +4,7 @@ import CommentsList from '../CommentsList/CommentsList';
 import{ postApiObjet } from '../../../utils/network';
 import { API_POSTLIKE, API_POSTDISLIKE } from '../../../constants/api';
 import styles from './PostsList.module.css';
+import cn from 'classnames';
 
 const PostItem = ({post, userId, userPhotourl}) => {
 	const [liked, setLiked] = useState(false);
@@ -47,15 +48,17 @@ const PostItem = ({post, userId, userPhotourl}) => {
 	useEffect(() => {
 		setLikeCount(post.likeCount);
 		setDislikeCount(post.dislikeCount);
-	}, []); //
+	}, []); 
 
+
+	//className = {cn(styles.App, styles.text)}		className = {styles.item__img}
 	return (
 		<>
 			<div className = {styles.item__autor}>
 				<div  className = {styles.item__autor__img}>
 					{post.userPhotourl 
 						? <img src = {post.userPhotourl} alt = {`Photo de  ${post.firstname} ${post.lastname}`} />
-						: <i class="fas fa-user"></i>
+						: <i className="fas fa-user"></i>
 					}
 				</div>
 
@@ -65,8 +68,8 @@ const PostItem = ({post, userId, userPhotourl}) => {
 				</div>
 			</div>
 			{post.photourl && 
-					<div className = {styles.item__img}>
-						<img src = {post.photourl} alt = {`image de post`} />
+					<div className = {styles.item__img} >
+						<img className = "rounded" src = {post.photourl} alt = {`image de post`} />
 					</div>
 			}
 

@@ -6,8 +6,8 @@ import { withErrorApi } from '../../hoc-helpers/withErrorApi'
 import PostsList from '../../components/ForumPage/PostsList/PostsList';
 import PostTest from '../../components/ForumPage/PostsList/PostTest';
 import PostNew from '../../components/ForumPage/PostsList/PostNew';
-import{ getApiResource } from '../../utils/network'
-import { API_POSTS } from '../../constants/api'
+import{ getApiResource } from '../../utils/network';
+import { API_POSTS } from '../../constants/api';
 
 import cn from 'classnames';
 import  '../App/App.css';
@@ -43,7 +43,6 @@ const ForumPage = ({ setErrorApi, firstname, lastname, userId, userPhotourl }) =
 		} else {
 			setErrorApi(true);
 		}
-		
 	}
 
 	useEffect(() => {

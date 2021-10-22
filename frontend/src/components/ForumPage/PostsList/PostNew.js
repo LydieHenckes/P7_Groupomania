@@ -14,7 +14,7 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 	
 		// envoyer la requête post avec
 		if (postNewContent !=='') {
-// ----------------
+
 			const data = new FormData();
 			data.append('userId', userId);
 			data.append('content', postNewContent);
@@ -34,8 +34,25 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 		setPostNewContent(event.target.value);
 	}
 
+	const uploadFile = (file) => {
+		// contrôle de type de ficher
+		if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+			alert('Vous pouvez choisir uniquement les images !')
+			return false;
+		}
+		// taille de fichier
+		if (file.size > 2*1024*1024) {
+			alert('La taille maximale est 2 Mo.')
+			return false;
+		}
+		return true;
+	}
+
 	const handlePicture = (event) => {
-		setFile(event.target.files[0]);
+		setFile('');
+		if (uploadFile(event.target.files[0])) {
+			setFile(event.target.files[0]);
+		}
 	}
 
 
@@ -54,6 +71,7 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 							<i className="far fa-image"></i>
 						</label>
 						<input id="file-upload" type="file"
+						 	className = {styles.file__input}
 							name="file"
 							accept=".jpg, .jpeg, .png"
 							onChange={event => handlePicture(event)}

@@ -1,0 +1,87 @@
+.wrapper {
+	max-width: 550px;
+	margin: 0 auto;
+	padding: 2em 0;
+}
+.form {
+	padding: 1em;
+	background-color: rgb(248, 240, 240); 
+	display: grid; 
+	gap: 10px 20px;
+	grid-template-columns: 1fr 1fr; 
+	grid-template-areas: 'title title' 'image content' 'button button';
+}
+.formframe:nth-child(1){
+	grid-area: title;
+	font-size: 2em;
+}
+.formframe:nth-child(2){
+	grid-area: image;
+}
+.formframe:nth-child(3){
+	grid-area: content;
+}
+.formframe:nth-child(4){
+	grid-area: button;
+}
+
+.formframe {
+	margin: auto;
+}
+
+.form__title {
+	text-align: center;
+	font-size: 18px;
+}
+
+.formframe__item {
+	margin: 0 0 1em 0;
+}
+
+.formframe__label {
+	font-size: 1.1em;
+	display: block;
+	margin: 0 0 10px 0;
+}
+
+.formframe__input {
+	height: 2.2em;
+	padding: 0 1em;
+	border-radius: 5px;
+	width: 100%;
+	font-size: 1.1em;
+
+}
+
+.file {
+
+}
+.file__item {
+
+}
+.file__addfile {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 30px;
+	background-color:  var(--color-btn-ligth);
+	padding: 0 20px;
+	min-height: 1.5em;
+	cursor: pointer;
+	color: white;
+}
+
+.file__addfile label {
+	cursor: pointer;
+}
+.file__input {
+
+}
+
+.file__preview {
+
+}
+
+.form__button {
+
+}

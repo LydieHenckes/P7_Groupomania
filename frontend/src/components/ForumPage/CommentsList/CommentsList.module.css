@@ -41,6 +41,7 @@
 	object-fit: cover;
 	top: 0;
 	left: 0;
+
 }
 
 .comment__textframe {
@@ -49,6 +50,8 @@
 	flex-grow: 1;
 	border-radius: 5px;
 	background-color: var(--color-background-logo);
+	display: flex;
+	flex-direction: column;
 }
 
 .comment__textframe__autorname {
@@ -61,12 +64,12 @@
 }
 
 .comment__textframe__img {
-	padding: 0 1em 0 1em;
-	display: flex;
-	justify-content: center;
+	padding: 0 4em;
+	align-self: center;
 	height: 200px;
+	width: 300px;
 	position: relative;
-	width: 60%;
+
 	text-align: center;
 }
 
@@ -145,7 +148,7 @@
 	border-style: none;
 	background-color: var(--color-background);
 	border-radius: 10px;
-	height: 32px !important;
+	min-height: 32px !important;
 	flex-grow: 1;
 	margin-right: 0.3em;
 	padding: 0.2em;

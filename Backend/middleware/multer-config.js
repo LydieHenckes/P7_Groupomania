@@ -7,7 +7,8 @@ const path = require('path');
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
-  'image/png': 'png'
+  'image/png': 'png',
+  'image/gif': 'gif',
 };
 
 // objet de configuration pour multer
