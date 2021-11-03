@@ -1,63 +1,78 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CommentsList from '../CommentsList/CommentsList';
-import{ postApiObjet } from '../../../utils/network';
-import { API_POSTLIKE, API_POSTDISLIKE } from '../../../constants/api';
+import{ postApiObjet, deleteApiObjet } from '../../../utils/network';
+import { API_POSTLIKE, API_POSTDISLIKE, API_POSTS } from '../../../constants/api';
 import styles from './PostsList.module.css';
-import cn from 'classnames';
+//import cn from 'classnames';
 
-const PostItem = ({post, userId, userPhotourl}) => {
-	const [liked, setLiked] = useState(false);
+const PostItem = ({post, userId, userPhotourl, setIsPostAdded}) => {
+
 	const [likeCount, setLikeCount] = useState(null);
 	const [dislikeCount, setDislikeCount] = useState(null);
-
+	
 	const handleLikePost = async () => {
-		// envoyer la requête post avec
-		const body = {
-			userId: userId,
-			postId: post.postId
+		try {
+			// envoyer la requête post avec
+			const body = {
+				userId: userId,
+				postId: post.postId
+			}
+			const res = await postApiObjet(API_POSTLIKE, body);
+			if (res) {
+				setLikeCount(res.likeCount);
+				setDislikeCount(res.dislikeCount);
+			};
+		} catch(err) {
+			console.log(err);
 		}
-		const res = await postApiObjet(API_POSTLIKE, body);
-		if (res) {
-			setLiked(true);
-		   setLikeCount(res.likeCount);
-		   setDislikeCount(res.dislikeCount);
-		} else {
-
-		};
-
 	}
 
-	const handleDislikePost = async () => {
-		// envoyer la requête post avec
-		const body = {
-			userId: userId,
-			postId: post.postId
+	const handleDislikePost = async () => {	
+		try {
+			// envoyer la requête post avec
+			const body = {
+				userId: userId,
+				postId: post.postId
+			}
+			const res = await postApiObjet(API_POSTDISLIKE, body);
+			if (res) {
+				setLikeCount(res.likeCount);
+				setDislikeCount(res.dislikeCount);
+			};
+		} catch(err) {
+			console.log(err);
 		}
-		const res = await postApiObjet(API_POSTDISLIKE, body);
-		if (res) {
-			setLiked(true);
-		   setLikeCount(res.likeCount);
-		   setDislikeCount(res.dislikeCount);
-		} else {
-
-		};
 	}
 
+	const handleDeletePost = async () => {
+		alert('supprimer ce post');
+		try {
+			const res = await deleteApiObjet(API_POSTS+`/${post.postId}`);
+			if (res) {
+				setIsPostAdded(true);
+			}
+		}
+		catch(err) {
+			console.log(err);
+		} 
+	}
 	
 	useEffect(() => {
-		setLikeCount(post.likeCount);
-		setDislikeCount(post.dislikeCount);
-	}, []); 
+		if (post) {
+			setLikeCount(post.likeCount);
+			setDislikeCount(post.dislikeCount);
+		}
+		
+	}, [post]); 
 
 
-	//className = {cn(styles.App, styles.text)}		className = {styles.item__img}
 	return (
 		<>
 			<div className = {styles.item__autor}>
 				<div  className = {styles.item__autor__img}>
 					{post.userPhotourl 
-						? <img src = {post.userPhotourl} alt = {`Photo de  ${post.firstname} ${post.lastname}`} />
+						? <img src = {post.userPhotourl} alt = {` ${post.firstname} ${post.lastname}`} />
 						: <i className="fas fa-user"></i>
 					}
 				</div>
@@ -68,21 +83,34 @@ const PostItem = ({post, userId, userPhotourl}) => {
 				</div>
 			</div>
 			{post.photourl && 
+				<div className = {styles.item__imgframe}>
 					<div className = {styles.item__img} >
-						<img className = "rounded" src = {post.photourl} alt = {`image de post`} />
+						<img className = "rounded" src = {post.photourl}  alt = 'contenu de post' />
 					</div>
+				</div>
 			}
-
-			<p className = {styles.item__content}>
-				{post.content}
-			</p>
-
+			<div className = {styles.item__contentframe}>
+				<div className = {styles.item__content}>
+					{post.content}
+				</div>
+				<div className = {styles.item__deletebtnframe}>
+					{post.userId === userId &&
+						<div className = {styles.item__deletebtn}
+								aria-label ="Supprimer ce post" role = "button" 
+								title = "Supprimer ce post"
+								onClick = {handleDeletePost}>
+							<i class="fas fa-trash-alt"></i>
+						</div>
+						}
+				</div>
+			</div>
+			
 			<div className = {styles.item__likes}>
 				<div onClick = {handleLikePost}><i class="far fa-thumbs-up"></i> {likeCount} </div>
 				<div onClick = {handleDislikePost}><i class="far fa-thumbs-down"></i>{` ${dislikeCount}`}</div>
 			</div>
 
-			<div className = {styles.item__comments}>
+			<div >
 				<CommentsList postId = {post.postId} userId = {userId} userPhotourl = {userPhotourl} />
 			</div>
 
@@ -93,7 +121,8 @@ const PostItem = ({post, userId, userPhotourl}) => {
 PostItem.propTypes = {
 	post: PropTypes.object,
 	userId: PropTypes.number,
-	userPhotourl: PropTypes.string
+	userPhotourl: PropTypes.string,
+	setIsPostAdded: PropTypes.func
 }
 
 export default PostItem;

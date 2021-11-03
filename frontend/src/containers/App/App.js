@@ -1,6 +1,5 @@
-//import cn from 'classnames';
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Switch, NavLink, Route } from 'react-router-dom';
+import { BrowserRouter, Switch,  Route } from 'react-router-dom';
 //import routesConfig from '../../routes/routesConfig'
 import LogInPage from '../LogInPage/LogInPage';
 import RegisterPage from '../LogInPage/RegisterPage';
@@ -14,44 +13,37 @@ import { API_AUTH_AUTHUSER } from '../../constants/api'
 
 import  './App.css';
 
-//className = {cn(styles.App, styles.text)}
-
 const App = () => {
   const [firstname, setFirstname] = useState('');
 	const [lastname, setLastname] = useState('');
   const [userId, setUserId] = useState(null);
   const [userPhotourl, setUserPhotourl] = useState('');
+  const [isProfilChanged, setIsProfilChanged] = useState(false);
 
- // const isMounted = useIsMounted();
-
-  /*  if (isMounted()) {
-        
-      } */
-	
-    useEffect(() => {
-  	(
-			async () => {
-
-				const res = await fetch(API_AUTH_AUTHUSER, {
-					headers: {'Content-Type': 'application/json'},
-					credentials: 'include',
-			  });
-			  const content = await res.json();
-       // console.log('content22: ',content);  
-        
-        if (content.hasOwnProperty('firstName')) {
+ 
+  useEffect(() => {
+    async function fetchAuth() {
+      // setDataLoading(true);
+      try {
+        const res = await fetch(API_AUTH_AUTHUSER, {
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+          });
+          const content = await res.json();
           setFirstname(content.firstName);
           setLastname(content.lastName);
           setUserId(content.userId);
           setUserPhotourl(content.photourl);
-        }
-			 
-			}
-		)();
-
-	}) 
-  
-
+          setIsProfilChanged(false);
+      } catch (err) {
+          console.log(err);
+      } finally {
+        //  setDataLoading(false);
+      }
+    }
+    fetchAuth();
+  }, [isProfilChanged])
+// 
   return (
     <>
       <BrowserRouter>
@@ -59,12 +51,12 @@ const App = () => {
         <Header firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId} />
 
         <Switch>
-          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId} userPhotourl = {userPhotourl} />}/>
-          <Route path = "/login" exact component= {() => <LogInPage firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname}/>}/>
+          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId} userPhotourl = {userPhotourl} setIsProfilChanged = {setIsProfilChanged} />}/>
+          <Route path = "/login" exact component= {() => <LogInPage setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId}  setUserPhotourl= {setUserPhotourl} setIsProfilChanged = {setIsProfilChanged}  />}/>
           <Route path = "/register" exact component= {RegisterPage}/>
           <Route path = "/users" exact component= {TeamPage}/>
           <Route path = "/users/:id" exact component= {PersonPage}/>
-          <Route path = "/profil" exact component= {() => <ProfilPage userId = {userId} />}/>
+          <Route path = "/profil" exact component= {() => <ProfilPage userId = {userId} setIsProfilChanged = {setIsProfilChanged} />}/>
           <Route path = "*" exact component= {NotFoundPage}/>
           
         </Switch>

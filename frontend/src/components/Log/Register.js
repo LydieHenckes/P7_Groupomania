@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { API_AUTH_SIGNUP } from '../../constants/api'
 import PropTypes from 'prop-types';
-import styles from './Log.module.css';
+//import styles from './Log.module.css';
 
 const Register = () => {
 	const [firstname, setFirstname] = useState('');

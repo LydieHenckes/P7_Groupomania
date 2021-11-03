@@ -11,23 +11,29 @@ import styles from './PersonPage.module.css';
 const PersonPage = ({ match, setErrorApi}) => {
 	const [personInfo, setPersonInfo] = useState(null);
 	const [personPhoto, setPersonPhoto] = useState(null);
-	useEffect( () => {
-		(async () => {
-			const id = match.params.id;
-			const res = await getApiResource(`${API_USERS}/${id}/`);
-			setErrorApi(!res);
-			if (res) {
-				setPersonInfo(res);
-				if (res.photourl) {
-					setPersonPhoto(res.photourl)
-				} else {
-					setPersonPhoto(avatar);
-				};
-			};
-		
-		})();
 
+	useEffect( () => {
+		async function fetchPerson() {
+			try {
+				const id = match.params.id;
+				const res = await getApiResource(`${API_USERS}/${id}/`);
+				setErrorApi(!res);
+				if (res) {
+					setPersonInfo(res);
+					if (res.photourl) {
+						setPersonPhoto(res.photourl)
+					} else {
+						setPersonPhoto(avatar);
+					};
+				};
+			} catch(err) {
+				console.log(err);
+			} finally {
+			}
+		}
+		fetchPerson();
 	}, []);
+	
 	return (
 		<div className = {styles.container}>
 			{personInfo && (

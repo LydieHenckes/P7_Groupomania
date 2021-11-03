@@ -41,6 +41,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+ul li{list-style: none;}
 
 .header__text {
   line-height: 1.7;

@@ -1,7 +1,3 @@
-
-
-export const HTTP = 'http://';
-export const HTTPS = 'https://';
 const GPM_ROOT = 'http://localhost:8080/api/';
 const GPM_AUTH = 'auth/';
 const GMP_LOGIN = 'login';

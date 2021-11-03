@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { withErrorApi } from '../../hoc-helpers/withErrorApi';
-import Banner from '../../components/Banner/Banner';
 import TeamList from '../../components/ForumPage/TeamList/TeamList';
 import{ getApiResource } from '../../utils/network'
 import { API_USERS } from '../../constants/api'
@@ -37,7 +36,7 @@ const TeamPage = ({ setErrorApi }) => {
 	}
 */
 	useEffect(() => {
-		const getResource = async (url) => {
+		async function getResource  (url) {
 			const res = await getApiResource(url);
 			if (res) {
 				const teamList = res.map(({userId, content, firstname, lastname, email, photourl, isAdmin, isDeleted}) => {
@@ -60,11 +59,10 @@ const TeamPage = ({ setErrorApi }) => {
 		}
 
 		getResource(API_USERS);
-	}, [])
+	}, [setErrorApi])
 
 	return (
 		<>
-			<Banner />
 			{team && <TeamList team = {team}/>}
 		</>
 	)

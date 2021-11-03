@@ -15,6 +15,7 @@ const Header = ({ firstname, setFirstname, setLastname, setUserId }) => {
 		setFirstname('');
 		setLastname('');
 		setUserId('');
+		console.log('Dans la fonction logout');
   };
 
 	let menu;

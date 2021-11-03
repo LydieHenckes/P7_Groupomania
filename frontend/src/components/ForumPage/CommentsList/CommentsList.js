@@ -9,47 +9,53 @@ import styles from './CommentsList.module.css';
 
 const CommentsList = ({postId, userId, userPhotourl}) => {
 	const [comments, setComments] = useState([]);
-	const [isCommentAdded, setIsCommentAdded] = useState(false); 
+	const [isCommentAddedDeleted, setIsCommentAddedDeleted] = useState(false); 
 
-	const getComments = async (url) => {
-		const res = await getApiResource(url);
-		if (res) {
-			const commentsList = res.map(({commentId, content, commentIsDeleted, createdAt, userId,  lastname, firstname, email, userPhotourl, userIsDeleted, photourl, commentlikeCount, commentdislikeCount}) => {
-				return {
-					commentId,
-					content,
-					commentIsDeleted,
-					createdAt,
-					userId,
-					lastname,
-					firstname,
-					email,
-					userPhotourl,
-					userIsDeleted,
-					photourl,
-					commentlikeCount,
-					commentdislikeCount
-				}
-			})
-			setComments(commentsList);
-			setIsCommentAdded(false); //!!!
-		} else {
-		}
-	}
+	
 
 	useEffect(() => {
+		async function getComments(url) {
+			try {
+				const res = await getApiResource(url);
+				if (res) {
+					const commentsList = res.map(({commentId, content, commentIsDeleted, createdAt, userId,  lastname, firstname, email, userPhotourl, userIsDeleted, photourl, commentlikeCount, commentdislikeCount}) => {
+						return {
+							commentId,
+							content,
+							commentIsDeleted,
+							createdAt,
+							userId,
+							lastname,
+							firstname,
+							email,
+							userPhotourl,
+							userIsDeleted,
+							photourl,
+							commentlikeCount,
+							commentdislikeCount
+						}
+					})
+					setComments(commentsList);
+					setIsCommentAddedDeleted(false); //!!!
+				}
+			} catch(err) {
+				console.log(err);
+			} finally {
+
+			}
+		}
 		getComments(API_COMMENTS+`/${postId}`);
-	}, [isCommentAdded]);
+	}, [postId, isCommentAddedDeleted]);
 
 	return (
 		<ul className = {styles.comments__container}>
 			{comments.map((comment) => 
-				<li className = {styles.comment} key = {comment.commentId}>
-					<CommentItem comment = {comment} userId = {userId}  />
+				<li key = {comment.commentId}>
+					<CommentItem comment = {comment} userId = {userId} setIsCommentAddedDeleted = {setIsCommentAddedDeleted} />
 				</li>
 			)}
 			
-			<CommentNew postId = {postId} userId = {userId} userPhotourl = {userPhotourl} setIsCommentAdded = {setIsCommentAdded}  />
+			<CommentNew postId = {postId} userId = {userId} userPhotourl = {userPhotourl} setIsCommentAddedDeleted = {setIsCommentAddedDeleted}  />
 		</ul>
 	)
 }

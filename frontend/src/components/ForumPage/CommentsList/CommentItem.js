@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import{ postApiObjet } from '../../../utils/network';
-import { API_COMMENTLIKE, API_COMMENTDISLIKE } from '../../../constants/api';
+import{ postApiObjet, deleteApiObjet } from '../../../utils/network';
+import { API_COMMENTLIKE, API_COMMENTDISLIKE, API_COMMENTS } from '../../../constants/api';
 
 import styles from './CommentsList.module.css';
 
-const CommentItem = ({comment, userId}) => {
+const CommentItem = ({comment, userId, setIsCommentAddedDeleted }) => {
 	const [commentlikeCount, setCommentlikeCount] = useState(null);
 	const [commentdislikeCount, setCommentdislikeCount] = useState(null);
 
@@ -40,6 +40,20 @@ const CommentItem = ({comment, userId}) => {
 
 		};
 	}
+	const handleDeleteComment = async () => {
+		alert('Supprimer');
+
+		try {
+			const res = await deleteApiObjet(API_COMMENTS+`/${comment.commentId}`);
+			if (res) {
+				setIsCommentAddedDeleted(true);
+			}
+		}
+		catch(err) {
+			console.log(err);
+		} 
+
+	}
 
 
 	useEffect(() => {
@@ -52,7 +66,7 @@ const CommentItem = ({comment, userId}) => {
 			<div className = {styles.comment__frame}>
 				<div className = {styles.comment__autorimg}>
 					{comment.userPhotourl 
-						? <img src = {comment.userPhotourl} alt = {`Photo de  ${comment.firstname} ${comment.lastname}`} />
+						? <img src = {comment.userPhotourl} alt = {` ${comment.firstname} ${comment.lastname}`} />
 						: <i className="fas fa-user"></i>
 					}
 				</div>
@@ -62,14 +76,27 @@ const CommentItem = ({comment, userId}) => {
 					</div>
 					
 					{comment.photourl && 
-					<div className = {styles.comment__textframe__img}>
-						<img src = {comment.photourl} alt = {`image de comment`} />
-					</div>
+					<div className = {styles.comment__textframe__imgframe}>
+						<div className = {styles.comment__textframe__img}>
+							<img src = {comment.photourl} alt ='contenu de comment' />
+						</div>
+						</div>
 					}
 					<div  className = {styles.comment__textframe__content}>
 						{comment.content}
 					</div>
 				</div>
+				<div className = {styles.comment__deletebtnframe}>
+					{ comment.userId === userId &&
+						<div className = {styles.comment__deletebtn}
+								aria-label ="Supprimer cette commentaire" role = "button" 
+								title = "Supprimer cette commentaire"
+								onClick = {handleDeleteComment} >
+							<i class="fas fa-trash-alt"></i>
+						</div>
+						}
+				</div>
+				
 				<div className = {styles.comment__likes}>
 					<span onClick = {handleLikeComment}><i className="far fa-thumbs-up"></i>{` ${commentlikeCount}`}</span>
 				</div>

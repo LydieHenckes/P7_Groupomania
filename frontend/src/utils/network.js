@@ -1,4 +1,3 @@
-import { HTTP, HTTPS } from '../constants/api';
 /**
  * Envoie la requête fetch
  * @param {String} url - url de requête
@@ -64,13 +63,43 @@ export const postApiObjetWithImage = async (url, data) => {
 	}
 }
 
+export const putApiObjetWithImage = async (url, data) => {
+	try {
+		const res = await fetch(url, {
+			method: "PUT",
+		//	headers: {
+		//	"Content-Type": 'multipart/form-data'
+		//	},
+			credentials: 'include',
+			body: data
+		});
 
-/**
- * Change URL (HTTP sur HTTPS)
- * @param {String} url - url qui va être changé
- * @returns {String} - url avec HTTPS
- */
-export const changeHTTP = url => {
-	const result = url ? url.replace(HTTP, HTTPS) : url;
-	return result;
+		if (!res.ok) {
+			console.error('Could not fetch. ', res.status);
+			return false;
+		};
+		return await res.json();
+	} catch(error) {
+		console.error('Could not fetch. ', error.message);
+		return false;
+	}
 }
+
+export const deleteApiObjet = async (url) => {
+	try {
+		const res = await fetch(url, {
+			method: "DELETE",
+			credentials: 'include'
+		});
+
+		if (!res.ok) {
+			console.error('Could not fetch. ', res.status);
+			return false;
+		};
+		return await res.json();
+	} catch(error) {
+		console.error('Could not fetch. ', error.message);
+		return false;
+	}
+}
+

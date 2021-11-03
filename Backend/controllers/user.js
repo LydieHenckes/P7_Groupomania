@@ -121,6 +121,7 @@ exports.signup = (req, res, next) => {
 				lastName: user.lastname,
 				isAdmin: user.isadmin,
 				isDeleted: user.isdeleted,
+				photourl: user.photourl,
 			 });
 		 })
 		 .catch(error =>  res.status(404).json({ error: 'Utilisateur non trouvé ou le mot de passe incorrect!' }));
@@ -130,7 +131,7 @@ exports.signup = (req, res, next) => {
 	 }
  };
 
- exports.logout = (req, res, next) => {
+ exports.logout = (req, res, next) => {n
 	 
 	 res.cookie('jwt', '', {maxAge: 0});
 	 res.send({message: 'success'});

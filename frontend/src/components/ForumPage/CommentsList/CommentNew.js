@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { useState, Component } from 'react';
 import PropTypes from 'prop-types';
 import { postApiObjetWithImage } from '../../../utils/network';
 import { API_COMMENTS } from '../../../constants/api';
@@ -18,7 +17,6 @@ class CommentNew extends Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handlePicture = this.handlePicture.bind(this);
 		this.handleSendNewComment = this.handleSendNewComment.bind(this);
-		//this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleChange(event) {
@@ -44,10 +42,11 @@ class CommentNew extends Component {
 			data.append('content', this.state.commentNewContent);
 			if (this.state.file) data.append('image',this.state.file);
 
+//			if (this.state.file) console.log('new image: ', this.state.file);
 			const res = await postApiObjetWithImage(API_COMMENTS, data);
 			if (res) {
 				this.setState({commentNewContent: '', file: ''});
-				this.props.setIsCommentAdded(true);
+				this.props.setIsCommentAddedDeleted(true);
 			};
 
 		} else {alert('Message est vide!')}
@@ -103,7 +102,7 @@ CommentNew.propTypes = {
 	postId:  PropTypes.number, 
 	userId: PropTypes.number,
 	userPhotourl: PropTypes.string,
-	setIsCommentAdded: PropTypes.func
+	setIsCommentAddedDeleted: PropTypes.func
 }
 
 export default CommentNew;

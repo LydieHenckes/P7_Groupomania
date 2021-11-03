@@ -1,0 +1,15 @@
+.frame {
+	text-align: center;
+ }
+ 
+ .frame input {
+	margin-bottom: 10px;
+ }
+
+ .file__addbtn {
+	 margin: 10px 20px;
+	 border-radius: 20px;
+	 background-color: var(--color-btn);
+	 color: white;
+	cursor: pointer;
+ }

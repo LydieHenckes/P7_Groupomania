@@ -241,24 +241,27 @@ exports.deletePost = (req, res, next) => {
 			// если есть к посту картинка- удалить
 			db.PostPhoto.findOne({ where: { post_id: req.params.id} })
 			.then(postPhoto => {
+				if (postPhoto) {
+					const filename = postPhoto.photourl.split('/images/')[1];
+					fs.unlink(`images/${filename}`, () => {
+						// supprimer post
+						post.destroy({ where: { id: req.params.id} })
+						.then(() => res.status(200).json({ message: "Post supprimé !" }))
+						.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
+					})
+					} else {
+						post.destroy({ where: { id: req.params.id} })
+						.then(() => res.status(200).json({ message: "Post supprimé !" }))
+						.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
+					}
+/*
 				post.destroy({ where: { id: req.params.id} })
 					.then(() => res.status(200).json({ message: "Post supprimé !" }))
 					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
+					*/
 	/*  // changer pour ce code si il y a des vrais images
 	
-			if (postPhoto) {
-				const filename = postPhoto.photourl.split('/images/')[1];
-				fs.unlink(`images/${filename}`, () => {
-					// supprimer post
-					post.destroy({ where: { id: req.params.id} })
-					.then(() => res.status(200).json({ message: "Post supprimé !" }))
-					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
-				})
-				} else {
-					post.destroy({ where: { id: req.params.id} })
-					.then(() => res.status(200).json({ message: "Post supprimé !" }))
-					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
-				}
+			
 				*/
 			})
 			.catch(error => res.status(400).json({ error :"L'erreur de la base de données !"}));

@@ -1,11 +1,10 @@
 import LogIn from '../../components/Log/LogIn';
-import styles from './LogInPage.module.css';
 
 
-const LogInPage = ({firstname, setFirstname, setLastname}) => {
+const LogInPage = ({setFirstname, setLastname, setUserId, setUserPhotourl, setIsProfilChanged}) => {
 	return (
 		<>
-			<LogIn firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname}/>
+			<LogIn  setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId}  setUserPhotourl= {setUserPhotourl} setIsProfilChanged = {setIsProfilChanged} />
 		</>
 	)
 }

@@ -11,8 +11,8 @@ const TeamList = ({team}) => {
 				{team.map(({userId, firstname, lastname, photourl}) => 
 					<li className = {styles.person} key = {userId}>
 						<Link to ={`/users/${userId}`}>
-							{photourl && <img className = {styles.person__photo} src = {photourl} alt = {firstname} />}
-							{!photourl && <img className = {styles.person__photo} src = {avatar} alt = {firstname} />}
+							{photourl && <div className = {styles.person__photo}><img  src = {photourl} alt = {firstname} /></div>}
+							{!photourl && <div className = {styles.person__photo}><img  src = {avatar} alt = {firstname} /></div>}
 							<p>{firstname} {lastname}</p>
 						</Link>
 					</li>

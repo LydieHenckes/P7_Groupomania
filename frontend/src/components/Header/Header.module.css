@@ -1,5 +1,4 @@
 .headerContainer {
-
 	display: grid;
 	grid-template-columns: auto; 
 	grid-template-rows: auto auto;
@@ -13,11 +12,17 @@
 	border-bottom: solid 3px var(--color-border-header);
 }
 .menu li {
-	flex: 0 1 50%;
+	flex: 0 1 100%;
 }
+@media (min-width: 567px) {
+	.menu li {
+		flex: 0 1 50%;
+	}
+}
+
 @media (min-width: 767px) {
 	.menu li {
-		flex: 0 1 33.3%;
+		flex: 0 1 25%;
 	}
 }
 @media (min-width: 992px) {
@@ -40,7 +45,6 @@
 
 .menu {
 	grid-area: hdnav;
-
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;

@@ -27,7 +27,7 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 				setFile('');
 			};
 
-		} else {alert('Message est vide!')}
+		} else {alert('Votre message ne peut pas être vide !')}
 	}
 
 	const handleCange = (event) => {
@@ -83,7 +83,7 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 
 					</textarea>
 					<div className = {styles.postNew__btn}>
-						<button type="submit" title="Cliquez pour envoyer"><i className="fa fa-paper-plane-o" aria-hidden="true"></i> Envoyer </button>
+						<button className = {styles.postNew__btnsubmit} type="submit" title="Cliquez pour envoyer"><i className="fa fa-paper-plane-o" aria-hidden="true"></i> Envoyer </button>
 					</div>
 				</div>
 				<div className= {styles.postNew__photourl} >

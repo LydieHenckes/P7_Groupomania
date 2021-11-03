@@ -8,7 +8,7 @@ import styles from './PostsList.module.css';
 //<i class="fas fa-thumbs-down"></i>
 
 
-const PostsList = ({posts, userId, userPhotourl}) => {
+const PostsList = ({posts, userId, userPhotourl, setIsPostAdded}) => {
 
 
 
@@ -17,7 +17,7 @@ const PostsList = ({posts, userId, userPhotourl}) => {
 			<ul className = {styles.posts__container}>
 				{posts.map((post) => 
 					<li className = {cn(styles.posts__item,  styles.item)} key = {post.postId} >
-						<PostItem post = {post} userId = {userId} userPhotourl = {userPhotourl} />
+						<PostItem post = {post} userId = {userId} userPhotourl = {userPhotourl} setIsPostAdded = {setIsPostAdded} />
 					</li>
 				)}
 			</ul>

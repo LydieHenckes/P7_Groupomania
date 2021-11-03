@@ -1,14 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { withErrorApi } from '../../hoc-helpers/withErrorApi';
-import { postApiObjet } from '../../utils/network'
 import { API_AUTH_LOGIN } from '../../constants/api'
 
-import styles from './Log.module.css';
+//import styles from './Log.module.css';
 
-const LogIn = ({ firstname, setFirstname, setLastname }) => {
+const LogIn = ({ setFirstname, setLastname, setUserId, setUserPhotourl, setIsProfilChanged }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [redirect, setRedirect] = useState(false);
@@ -24,14 +22,16 @@ const LogIn = ({ firstname, setFirstname, setLastname }) => {
 				email,
 				password
 			})
-	  });
-	  const content = await res.json();
+	   });
+	   const content = await res.json();
 	  
-	  console.log('content: ', JSON.stringify(content));
-	  setRedirect(true);	  
-	  setFirstname(content.firstName);
-	  setLastname(content.lastName);
-	  
+	   console.log('content: ', JSON.stringify(content));
+	   setRedirect(true);	  
+	   setFirstname(content.firstName);
+	   setLastname(content.lastName);
+	   setUserId(content.userId);
+      setUserPhotourl(content.photourl);
+      setIsProfilChanged(false);
 
 
 	};

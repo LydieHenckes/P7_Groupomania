@@ -1,20 +1,16 @@
 .comments__container {
+	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
 	list-style-type: none;
+	padding-left: 0!important;
 }
 
-.comment {
-
-	margin: 0.2em;
-	background-color: white;
-	padding: 0.2em;
-	display: flex;
-	flex-direction: row;
-
-}
 
 .comment__frame {
+	padding: 0.2em;
+	margin: 0.2em;
+	background-color: white;
 	display: flex;
 	flex-grow: 1;
 	position: relative;
@@ -33,6 +29,20 @@
 	overflow: hidden;
 
 }
+.comment__deletebtnframe {
+	height: 1.8em;
+	width: 1.8em;
+	align-self: center;
+}
+
+.comment__deletebtn {
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	color: var(--color-title);
+}
 
 .comment__autorimg img {
 	position: absolute;
@@ -48,6 +58,7 @@
 	padding: 0.4em;
 	font-style: italic;
 	flex-grow: 1;
+
 	border-radius: 5px;
 	background-color: var(--color-background-logo);
 	display: flex;
@@ -63,13 +74,17 @@
 	font-size: 0.9em;
 }
 
+.comment__textframe__imgframe {
+	display: flex;
+	justify-content: center;
+}
 .comment__textframe__img {
 	padding: 0 4em;
 	align-self: center;
 	height: 200px;
 	width: 300px;
 	position: relative;
-
+	overflow: hidden;
 	text-align: center;
 }
 
@@ -100,8 +115,8 @@
 	width: 30px;
 	height: 30px;
 	position: absolute;
-	right: 3.5em;
-	bottom: -1em;
+	right: 5.5em;
+	bottom: -0.5em;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -122,8 +137,8 @@
 	width: 30px;
 	height: 30px;
 	position: absolute;
-	right: 0.5em;
-	bottom:-1em;
+	right: 2.5em;
+	bottom:-0.5em;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -187,13 +202,12 @@ input[type="file"] {
 }
 
 button {
-	border-radius: 50%;
+	border-radius: 25%;
 	background-color: var(--color-btn);
 	color: white;
 }
 
 .commentNew__btn {
-	
 	border-radius: 50%;
 }
 

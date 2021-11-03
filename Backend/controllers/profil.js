@@ -39,14 +39,27 @@ exports.getOneUser = (req, res, next) => {
 };
 
 exports.modifyUser = (req, res, next) => {
-	console.log('dans la fonction modify');
+	console.log('-------------------------dans la fonction modify');
+	console.log(req.body.firstname);
 	if (req.file) {
+		console.log(req.file.filename);
 		db.User.findByPk(req.params.id)
 			.then(user => {
-				const filename = user.photourl.split('/images/')[1];
-				// suppression de l'anciene image
-				fs.unlink(`images/${filename}`, () => {
-				// update de utilisateur
+				if (user.photourl) {
+					const filename = user.photourl.split('/images/')[1];
+					// suppression de l'anciene image
+					fs.unlink(`images/${filename}`, () => {
+					// update de utilisateur
+						db.User.update({
+							firstname: req.body.firstname,
+							lastname: req.body.lastname,
+							email: req.body.email,
+							photourl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+						}, {where: {id: req.params.id}})
+							.then(() => res.status(200).json({ message: "L'utilisateur modifié !"}))
+							.catch(error => res.status(400).json({ error }));
+					})
+				} else {
 					db.User.update({
 						firstname: req.body.firstname,
 						lastname: req.body.lastname,
@@ -55,7 +68,8 @@ exports.modifyUser = (req, res, next) => {
 					}, {where: {id: req.params.id}})
 						.then(() => res.status(200).json({ message: "L'utilisateur modifié !"}))
 						.catch(error => res.status(400).json({ error }));
-				})
+				}
+				
 
 			})
 			.catch(error => res.status(400).json({ error : "L'utilisateur n'est pas trouvé !" }));
