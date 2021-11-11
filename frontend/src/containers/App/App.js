@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Switch,  Route } from 'react-router-dom';
-//import routesConfig from '../../routes/routesConfig'
+
 import LogInPage from '../LogInPage/LogInPage';
 import RegisterPage from '../LogInPage/RegisterPage';
 import ForumPage from '../FomumPage/ForumPage';
@@ -20,7 +20,6 @@ const App = () => {
   const [userPhotourl, setUserPhotourl] = useState('');
   const [isProfilChanged, setIsProfilChanged] = useState(false);
 
- 
   useEffect(() => {
     async function fetchAuth() {
       // setDataLoading(true);
@@ -30,6 +29,7 @@ const App = () => {
             credentials: 'include',
           });
           const content = await res.json();
+          console.log('content: ', content);
           setFirstname(content.firstName);
           setLastname(content.lastName);
           setUserId(content.userId);
@@ -43,6 +43,39 @@ const App = () => {
     }
     fetchAuth();
   }, [isProfilChanged])
+ /*
+  useEffect(() => {
+    async function fetchAuth() {
+      // setDataLoading(true);
+      console.log('firstname - début', firstname);
+      setFirstname('');
+      try {
+        const res = await fetch(API_AUTH_AUTHUSER, {
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+          });
+          const content = await res.json();
+          setFirstname(content.firstName);
+          setLastname(content.lastName);
+          setUserId(content.userId);
+          setUserPhotourl(content.photourl);
+          setIsProfilChanged(false);
+          console.log('firstname - succès', firstname);
+      } catch (err) {
+          console.log(err);
+          setLastname('');
+          setUserId(null);
+          console.log('firstname - err', firstname);
+      } finally {
+        //  setDataLoading(false);
+      }
+    }
+
+    fetchAuth();
+
+
+  }, [isProfilChanged])
+  */
 // 
   return (
     <>
@@ -53,10 +86,11 @@ const App = () => {
         <Switch>
           <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId} userPhotourl = {userPhotourl} setIsProfilChanged = {setIsProfilChanged} />}/>
           <Route path = "/login" exact component= {() => <LogInPage setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId}  setUserPhotourl= {setUserPhotourl} setIsProfilChanged = {setIsProfilChanged}  />}/>
-          <Route path = "/register" exact component= {RegisterPage}/>
+          <Route path = "/register" exact component= {() => <RegisterPage  isAdmin = {false} />} />
+          <Route path = "/registeradmin" exact component= {() => <RegisterPage  isAdmin = {true} />}/>
           <Route path = "/users" exact component= {TeamPage}/>
           <Route path = "/users/:id" exact component= {PersonPage}/>
-          <Route path = "/profil" exact component= {() => <ProfilPage userId = {userId} setIsProfilChanged = {setIsProfilChanged} />}/>
+          <Route path = "/profil" exact component= {() => <ProfilPage userId = {userId} setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId} setIsProfilChanged = {setIsProfilChanged} />}/>
           <Route path = "*" exact component= {NotFoundPage}/>
           
         </Switch>

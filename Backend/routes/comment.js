@@ -17,19 +17,19 @@ const commentCtrl = require('../controllers/comment');
 
 
 // renvoie des comments correspondant à un postId
-router.get('/:id', commentCtrl.getCommentsByPostId);
+router.get('/:id', auth, commentCtrl.getCommentsByPostId);
 
 // crée un nouveau comment dans la base comments
-router.post('/', multer, commentCtrl.createComment);
+router.post('/', multer, auth, commentCtrl.createComment);
 
 //suppression d'un comment
-router.delete('/:id', commentCtrl.deleteComment);
+router.delete('/:id', auth, commentCtrl.deleteComment);
 
 //like d'un comment
-router.post('/like', commentCtrl.likeComment);
+router.post('/like', auth, commentCtrl.likeComment);
 
 //dislike d'un comment
-router.post('/dislike', commentCtrl.dislikeComment);
+router.post('/dislike', auth,  commentCtrl.dislikeComment);
 
 
 module.exports = router;

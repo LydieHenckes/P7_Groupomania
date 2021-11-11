@@ -15,11 +15,12 @@ const Header = ({ firstname, setFirstname, setLastname, setUserId }) => {
 		setFirstname('');
 		setLastname('');
 		setUserId('');
-		console.log('Dans la fonction logout');
+
   };
 
 	let menu;
-	if (firstname === '') {
+
+	if ((firstname === '')||(!firstname)) {
 		menu = (
 			<ul className = {styles.menu}>
 				<li><Link to="/login" exact>Se connecter</Link></li>

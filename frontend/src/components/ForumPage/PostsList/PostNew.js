@@ -35,17 +35,20 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 	}
 
 	const uploadFile = (file) => {
-		// contrôle de type de ficher
-		if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
-			alert('Vous pouvez choisir uniquement les images !')
-			return false;
+		if (file) {
+			// contrôle de type de ficher
+			if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+				alert('Vous pouvez choisir uniquement les images !')
+				return false;
+			}
+			// taille de fichier
+			if (file.size > 2*1024*1024) {
+				alert('La taille maximale est 2 Mo.')
+				return false;
+			}
+			return true;
 		}
-		// taille de fichier
-		if (file.size > 2*1024*1024) {
-			alert('La taille maximale est 2 Mo.')
-			return false;
-		}
-		return true;
+
 	}
 
 	const handlePicture = (event) => {

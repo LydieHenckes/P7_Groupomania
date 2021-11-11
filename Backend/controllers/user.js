@@ -9,20 +9,28 @@ const User = require('../models/User');
 
 //logique métier pour la route Post /signup (inscription)
 exports.signup = (req, res, next) => {
-	// contrôle de l'email 
+	// contrôle des champs de requête: email, firstname et lastname
 
 	if (!validator.isEmail(req.body.email)) {
 		return res.status(401).json({error: "Email n'est pas valide !"});
 	}
+	if (!validator.isAlpha(req.body.firstname)) {
+		return res.status(401).json({error: "Prénom n'est pas valide !"});
+	}
+	if (!validator.isAlpha(req.body.lastname)) {
+		return res.status(401).json({error: "Prénom n'est pas valide !"});
+	}
+
 	// cryptage du mot de passe
 	bcrypt.hash(req.body.password, 10)
 	  .then(hash => {
-			console.log("hash : ", hash);
+	//		console.log("isAdmin--------------------------------- : ", req.body.isAdmin);
 			db.User.create ({
 				email: req.body.email,
 				firstname: req.body.firstname,
 				lastname: req.body.lastname,
-				password: hash
+				password: hash,
+				isadmin : req.body.isAdmin
 			})
 			.then(user => {
 				console.log("user: ", user.id, user.firstname);
@@ -51,8 +59,13 @@ exports.signup = (req, res, next) => {
 	  .catch(error => res.status(500).json({ error }));
  };
 
+
+
  // logique métier pour la route Post /login (connection)
  exports.login = (req, res, next) => {
+	if (!validator.isEmail(req.body.email)) {
+		return res.status(401).json({error: "Email n'est pas valide !"});
+	}
 	 // recherche d'utilisateur par son email
 	 db.User.findOne({
 		where: {
@@ -79,7 +92,7 @@ exports.signup = (req, res, next) => {
 				'az8K56GTF712dpB',
 				{ expiresIn: '24h' }
 			 );
-//			 console.log('token: ', token);
+
 			  res.cookie('jwt', token, { httpOnly: true, maxAge : 24 * 60 * 60 * 1000});
 			  res.status(200).json({
 				 userId: user.id,
@@ -131,7 +144,7 @@ exports.signup = (req, res, next) => {
 	 }
  };
 
- exports.logout = (req, res, next) => {n
+ exports.logout = (req, res, next) => {
 	 
 	 res.cookie('jwt', '', {maxAge: 0});
 	 res.send({message: 'success'});

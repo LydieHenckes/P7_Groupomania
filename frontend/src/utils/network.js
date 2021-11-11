@@ -5,7 +5,9 @@
  */
 export const getApiResource = async (url) => {
 	try {
-		const res = await fetch(url);
+		const res = await fetch(url, {
+			credentials: 'include'
+		});
 		if (!res.ok) {
 			console.error('Could not fetch. ', res.status);
 			return false;

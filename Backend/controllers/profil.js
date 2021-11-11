@@ -88,11 +88,12 @@ exports.deleteUser = (req, res, next) => {
 	db.User.findByPk(req.params.id)
 		.then(user => {
 			if (user.photourl) {
+				const filename = user.photourl.split('/images/')[1];
 				fs.unlink(`images/${filename}`, () => {
 					user.update({
-							firstname: '',
+							firstname: "L'utilisateur est désinscrit",
 							lastname: '',
-							email: '',
+							email: Date.now()+'_',
 							password: '',
 							photourl: null,
 							isdeleted: true,
@@ -102,14 +103,15 @@ exports.deleteUser = (req, res, next) => {
                 .catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de l'utilisateur !" }));
 				})
 			} else {
+				console.log('-----------------++++++++++++--------------', req.params.id);
 				user.update({
-					firstname: '',
+					firstname: "L'utilisateur est désinscrit",
 					lastname: '',
-					email: '',
+					email: Date.now()+'_',
 					password: '',
 					photourl: null,
 					isdeleted: true,
-		}, {where: {id: req.params.id}})
+				}, { where: { id: req.params.id} } )
 					.then(() => res.status(200).json({ message: "L'utilisateur supprimé !"}))
 					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de l'utilisateur !" }));	
 			} 

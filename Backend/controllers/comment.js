@@ -83,7 +83,7 @@ exports.createComment = (req, res, next) => {
 			  })
 			 .catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
 		})
-	 .catch(error => res.status(500).json({ error:"Erreur de la base de données 2!" }));
+	 .catch(error => res.status(500).json({ error:"Erreur de la base de données !" }));
 };
 
 exports.deleteComment = (req, res, next) => {

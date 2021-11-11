@@ -15,28 +15,28 @@ const router = express.Router();
 const postCtrl = require('../controllers/post');
 
 // renvoie tous les posts  
-router.get('/', postCtrl.getAllPosts);
+router.get('/', auth,  postCtrl.getAllPosts);
+
+// renvoie un post correspondant à un id
+router.get('/:id', auth, postCtrl.getOnePost);
 
 // renvoie des posts correspondant à un userId
-router.get('/:id', postCtrl.getOnePost);
-
-// renvoie des posts correspondant à un userId
-router.get('/:id/user', postCtrl.getPostsByUserId);
+router.get('/:id/user', auth,  postCtrl.getPostsByUserId);
 
 // crée un nouveau post dans la base posts
-router.post('/', multer, postCtrl.createPost);
+router.post('/', auth, multer, postCtrl.createPost);
 
 // modification de post 
-router.put('/:id',  postCtrl.modifyPost);
+router.put('/:id',  auth, postCtrl.modifyPost);
 
 //suppression d'un post
-router.delete('/:id', postCtrl.deletePost);
+router.delete('/:id', auth, postCtrl.deletePost);
 
 //like d'un post //auth,
-router.post('/like',  postCtrl.likePost);
+router.post('/like',  auth, postCtrl.likePost);
 
 //dislike d'un post
-router.post('/dislike', postCtrl.dislikePost);
+router.post('/dislike', auth,  postCtrl.dislikePost);
 
 
 module.exports = router;
