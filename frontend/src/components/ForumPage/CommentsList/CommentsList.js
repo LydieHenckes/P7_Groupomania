@@ -7,7 +7,7 @@ import { API_COMMENTS } from '../../../constants/api';
 import PropTypes from 'prop-types';
 import styles from './CommentsList.module.css';
 
-const CommentsList = ({postId, userId, userPhotourl}) => {
+const CommentsList = ({postId, userId, isAdmin, userPhotourl}) => {
 	const [comments, setComments] = useState([]);
 	const [isCommentAddedDeleted, setIsCommentAddedDeleted] = useState(false); 
 
@@ -51,7 +51,7 @@ const CommentsList = ({postId, userId, userPhotourl}) => {
 		<ul className = {styles.comments__container}>
 			{comments.map((comment) => 
 				<li key = {comment.commentId}>
-					<CommentItem comment = {comment} userId = {userId} setIsCommentAddedDeleted = {setIsCommentAddedDeleted} />
+					<CommentItem comment = {comment} userId = {userId} isAdmin = {isAdmin} setIsCommentAddedDeleted = {setIsCommentAddedDeleted} />
 				</li>
 			)}
 			
@@ -63,6 +63,7 @@ const CommentsList = ({postId, userId, userPhotourl}) => {
 CommentsList.propTypes = {
 	postId: PropTypes.number,
 	userId: PropTypes.number,
+	isAdmin: PropTypes.bool,
 	userPhotourl: PropTypes.string
 }
 

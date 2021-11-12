@@ -55,7 +55,8 @@ const reqLimiter = rateLimit({
 // utilisation de toobusy-js : si le serveur est trop occupé, envoie la réponse, sans traîter la requête, car cela peut être une attaque DoS
 app.use(function(req, res, next) {
 	if (toobusy()) {
-		 res.send(503, "Server Too Busy");
+		 res.status(503).json({ error: new Error('Server Too Busy') });
+	//	 res.send(503, "Server Too Busy");
 	} else {
 		next();
 	}

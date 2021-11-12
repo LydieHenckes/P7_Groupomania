@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { postApiObjetWithImage } from '../../../utils/network';
 import { API_POSTS } from '../../../constants/api';
-
+import cn from 'classnames';
 import styles from './PostsList.module.css';
 
 const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
@@ -61,7 +61,7 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 
 	return (
 		<div className = {styles.posts__container}>
-			<form className = {styles.item} onSubmit = {handleSendNewPost}>
+			<form className =  {cn(styles.item, styles.itemNew)}  onSubmit = {handleSendNewPost}>
 				<div className = {styles.postNew}>
 					<div  className = {styles.post__autorimg}>
 						{userPhotourl 
@@ -86,7 +86,7 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 
 					</textarea>
 					<div className = {styles.postNew__btn}>
-						<button className = {styles.postNew__btnsubmit} type="submit" title="Cliquez pour envoyer"><i className="fa fa-paper-plane-o" aria-hidden="true"></i> Envoyer </button>
+						<button className = {styles.postNew__btnsubmit} type="submit" title="Cliquez pour envoyer"><i className="fa fa-paper-plane-o" aria-hidden="true"></i>  </button>
 					</div>
 				</div>
 				<div className= {styles.postNew__photourl} >

@@ -48,3 +48,8 @@ ul li{list-style: none;}
   font-size: var(--font-size-medium);
   color: var(--color-title);
 }
+
+._alert {
+  box-shadow: 0 0 2px 1px red;
+  border-color: #DD2C00!important;
+}

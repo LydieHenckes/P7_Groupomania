@@ -13,7 +13,7 @@ import  '../App/App.css';
 import styles from './ForumPage.module.css';
 
 //setErrorApi,
-const ForumPage = ({  firstname, lastname, userId, userPhotourl, isProfilChanged }) => {
+const ForumPage = ({  firstname, lastname, userId, isAdmin, userPhotourl, isProfilChanged }) => {
 	const [posts, setPosts] = useState(null);
 	const [isPostAdded, setIsPostAdded] = useState(false);
 	const [error, setError] = useState(false);
@@ -71,7 +71,7 @@ const ForumPage = ({  firstname, lastname, userId, userPhotourl, isProfilChanged
 					}
 				</div>
 				{firstname && <PostNew userId = {userId} userPhotourl = {userPhotourl} setIsPostAdded = {setIsPostAdded} />} 
-				{firstname && posts && <PostsList posts = {posts} userId = {userId} userPhotourl = {userPhotourl} setIsPostAdded = {setIsPostAdded} />}
+				{firstname && posts && <PostsList posts = {posts} userId = {userId} isAdmin = {isAdmin} userPhotourl = {userPhotourl} setIsPostAdded = {setIsPostAdded} />}
 			</div>}
 		</>
 
@@ -84,6 +84,7 @@ ForumPage.propTypes = {
 	firstname : PropTypes.string,
 	lastname : PropTypes.string,
 	userId: PropTypes.number,
+	isAdmin: PropTypes.bool,
 	userPhotourl: PropTypes.string,
 	isProfilChanged : PropTypes.bool
 }

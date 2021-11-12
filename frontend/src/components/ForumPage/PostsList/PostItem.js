@@ -6,7 +6,7 @@ import { API_POSTLIKE, API_POSTDISLIKE, API_POSTS } from '../../../constants/api
 import styles from './PostsList.module.css';
 //import cn from 'classnames';
 
-const PostItem = ({post, userId, userPhotourl, setIsPostAdded}) => {
+const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 
 	const [likeCount, setLikeCount] = useState(null);
 	const [dislikeCount, setDislikeCount] = useState(null);
@@ -94,7 +94,7 @@ const PostItem = ({post, userId, userPhotourl, setIsPostAdded}) => {
 					{post.content}
 				</div>
 				<div className = {styles.item__deletebtnframe}>
-					{post.userId === userId &&
+					{((post.userId === userId) || isAdmin) &&
 						<div className = {styles.item__deletebtn}
 								aria-label ="Supprimer ce post" role = "button" 
 								title = "Supprimer ce post"
@@ -111,7 +111,7 @@ const PostItem = ({post, userId, userPhotourl, setIsPostAdded}) => {
 			</div>
 
 			<div >
-				<CommentsList postId = {post.postId} userId = {userId} userPhotourl = {userPhotourl} />
+				<CommentsList postId = {post.postId} userId = {userId} isAdmin = {isAdmin} userPhotourl = {userPhotourl} />
 			</div>
 
 		</>
@@ -121,6 +121,7 @@ const PostItem = ({post, userId, userPhotourl, setIsPostAdded}) => {
 PostItem.propTypes = {
 	post: PropTypes.object,
 	userId: PropTypes.number,
+	isAdmin : PropTypes.bool,
 	userPhotourl: PropTypes.string,
 	setIsPostAdded: PropTypes.func
 }

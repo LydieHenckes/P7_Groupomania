@@ -14,7 +14,7 @@ schema
 
 module.exports = (req, res, next) => {
 	if (!schema.validate(req.body.password)) {
-		console.log('-------------------------------');
+	//	console.log('-------------------------------');
 		const mustBeChangeString = schema.validate(req.body.password, { list: true });
 		return res.status(400).json( { error: 'Mot de passe doit contenir : ' + mustBeChangeString});
 	} else { next() };

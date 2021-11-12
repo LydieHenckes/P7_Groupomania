@@ -17,6 +17,7 @@ const App = () => {
   const [firstname, setFirstname] = useState('');
 	const [lastname, setLastname] = useState('');
   const [userId, setUserId] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [userPhotourl, setUserPhotourl] = useState('');
   const [isProfilChanged, setIsProfilChanged] = useState(false);
 
@@ -33,6 +34,7 @@ const App = () => {
           setFirstname(content.firstName);
           setLastname(content.lastName);
           setUserId(content.userId);
+          setIsAdmin(content.isAdmin);
           setUserPhotourl(content.photourl);
           setIsProfilChanged(false);
       } catch (err) {
@@ -43,49 +45,17 @@ const App = () => {
     }
     fetchAuth();
   }, [isProfilChanged])
- /*
-  useEffect(() => {
-    async function fetchAuth() {
-      // setDataLoading(true);
-      console.log('firstname - début', firstname);
-      setFirstname('');
-      try {
-        const res = await fetch(API_AUTH_AUTHUSER, {
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-          });
-          const content = await res.json();
-          setFirstname(content.firstName);
-          setLastname(content.lastName);
-          setUserId(content.userId);
-          setUserPhotourl(content.photourl);
-          setIsProfilChanged(false);
-          console.log('firstname - succès', firstname);
-      } catch (err) {
-          console.log(err);
-          setLastname('');
-          setUserId(null);
-          console.log('firstname - err', firstname);
-      } finally {
-        //  setDataLoading(false);
-      }
-    }
-
-    fetchAuth();
-
-
-  }, [isProfilChanged])
-  */
-// 
+ 
+  
   return (
     <>
       <BrowserRouter>
       
-        <Header firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId} />
+        <Header firstname = {firstname} setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId} setIsAdmin= {setIsAdmin} />
 
         <Switch>
-          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId} userPhotourl = {userPhotourl} setIsProfilChanged = {setIsProfilChanged} />}/>
-          <Route path = "/login" exact component= {() => <LogInPage setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId}  setUserPhotourl= {setUserPhotourl} setIsProfilChanged = {setIsProfilChanged}  />}/>
+          <Route path = "/" exact component= {() => <ForumPage firstname = {firstname} lastname = {lastname} userId = {userId} isAdmin = {isAdmin} userPhotourl = {userPhotourl} setIsProfilChanged = {setIsProfilChanged} />}/>
+          <Route path = "/login" exact component= {() => <LogInPage setFirstname = {setFirstname} setLastname = {setLastname} setUserId = {setUserId} setIsAdmin= {setIsAdmin} setUserPhotourl= {setUserPhotourl} setIsProfilChanged = {setIsProfilChanged}  />}/>
           <Route path = "/register" exact component= {() => <RegisterPage  isAdmin = {false} />} />
           <Route path = "/registeradmin" exact component= {() => <RegisterPage  isAdmin = {true} />}/>
           <Route path = "/users" exact component= {TeamPage}/>

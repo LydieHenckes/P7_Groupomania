@@ -1,4 +1,4 @@
-backend/config/db.config.js
 backend/node_modules
 backend/images
+backend/.env__
 frontend/node_modules

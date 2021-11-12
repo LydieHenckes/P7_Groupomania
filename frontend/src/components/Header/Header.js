@@ -4,7 +4,7 @@ import { API_AUTH_LOGOUT } from '../../constants/api'
 import  logo  from '../../assets/logo-header-blue.png'
 import styles from './Header.module.css';
 
-const Header = ({ firstname, setFirstname, setLastname, setUserId }) => {
+const Header = ({ firstname, setFirstname, setLastname, setUserId, setIsAdmin }) => {
 	const logout = async () => {
 		await fetch(API_AUTH_LOGOUT, {
 			 method: 'POST',
@@ -14,7 +14,8 @@ const Header = ({ firstname, setFirstname, setLastname, setUserId }) => {
 
 		setFirstname('');
 		setLastname('');
-		setUserId('');
+		setUserId(null);
+		setIsAdmin(false);
 
   };
 
@@ -53,7 +54,8 @@ Header.propTypes = {
 	firstname: PropTypes.string,
 	lastname: PropTypes.string,
 	setFirstname: PropTypes.func, 
-	setLastname :PropTypes.func
+	setLastname :PropTypes.func,
+	setIsAdmin :PropTypes.func
 }
 
 

@@ -11,30 +11,7 @@ import { API_USERS } from '../../constants/api'
 
 const TeamPage = ({ setErrorApi }) => {
 	const [team, setTeam] = useState(null);
-/*
-	const getResource = async (url) => {
-		const res = await getApiResource(url);
-	//	console.log(res);
-		if (res) {
-			const teamList = res.map(({userId, content, firstname, lastname, email, photourl, isAdmin, isDeleted}) => {
-				return {
-					userId,
-					content, 
-					firstname, 
-					lastname, 
-					email, 
-					photourl, 
-					isAdmin, 
-					isDeleted
-				}
-			})
-			setTeam(teamList);
-			setErrorApi(false);
-		} else {
-			setErrorApi(true);
-		}
-	}
-*/
+
 	useEffect(() => {
 		async function getResource  (url) {
 			const res = await getApiResource(url);
@@ -51,7 +28,11 @@ const TeamPage = ({ setErrorApi }) => {
 						isDeleted
 					}
 				})
-				setTeam(teamList);
+				// filter pour enlever de la liste des utilisateurs désinscrits, qui sont présents dans la base de donnée
+				const teamListEx = teamList.filter((user) => {
+					return !user.isDeleted
+			  });
+				setTeam(teamListEx);
 				setErrorApi(false);
 			} else {
 				setErrorApi(true);

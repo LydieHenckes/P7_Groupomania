@@ -6,7 +6,7 @@ import Loader from '../Loader/Loader';
 import { API_AUTH_LOGIN } from '../../constants/api'
 
 
-const LogIn = ({setFirstname, setLastname, setUserId, setUserPhotourl, setIsProfilChanged }) => {
+const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotourl, setIsProfilChanged }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [redirect, setRedirect] = useState(false);
@@ -28,11 +28,12 @@ const LogIn = ({setFirstname, setLastname, setUserId, setUserPhotourl, setIsProf
 			});
 			if (res.ok) {
 				const content = await res.json();
-				console.log('content in log', content);
+		//		console.log('content in log', content);
 				setRedirect(true);	  
 				setFirstname(content.firstName);
 				setLastname(content.lastName);
 				setUserId(content.userId);
+				setIsAdmin(content.isAdmin);
 				setUserPhotourl(content.photourl);
 				setIsProfilChanged(false);
 			}
@@ -72,11 +73,11 @@ const LogIn = ({setFirstname, setLastname, setUserId, setUserPhotourl, setIsProf
 						<div className= "form-signin">
 							<form onSubmit = {handleLogIn}>
 								<h1 className="h3 mb-3 fw-normal">Connectez-vous</h1>
-								<input type="email" className="form-control" placeholder="Adresse mail" required
+								<input type="email" className="form-control" placeholder="Adresse mail"   required
 									onChange = {e => setEmail(e.target.value)} />
 								<input type="password" className="form-control" placeholder="Mot de passe" required
 									onChange = {e => setPassword(e.target.value)} />
-								<button className="w-100 btn btn-lg btn-primary" type="submit">Se connecter</button>
+								<button className="w-100 btn btn-lg btn-primary mt-2" type="submit">Se connecter</button>
 							</form>
 						</div>
 				}
@@ -91,6 +92,7 @@ LogIn.propTypes = {
 	setFirstname: PropTypes.func, 
 	setLastname :PropTypes.func,
 	setUserId :PropTypes.func,
+	setIsAdmin: PropTypes.func,
 	setUserPhotourl:PropTypes.func,
 	setIsProfilChanged :PropTypes.func
 }

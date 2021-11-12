@@ -13,6 +13,11 @@
 	margin: 0.4em;
 	background-color: white;
 }
+
+.itemNew {
+	border: 2px solid var(--color-border-frame);
+}
+
 @media (min-width: 768px) {
 	.item{
 		width: 80% 

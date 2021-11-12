@@ -6,7 +6,7 @@ import { API_COMMENTLIKE, API_COMMENTDISLIKE, API_COMMENTS } from '../../../cons
 
 import styles from './CommentsList.module.css';
 
-const CommentItem = ({comment, userId, setIsCommentAddedDeleted }) => {
+const CommentItem = ({comment, userId, isAdmin, setIsCommentAddedDeleted }) => {
 	const [commentlikeCount, setCommentlikeCount] = useState(null);
 	const [commentdislikeCount, setCommentdislikeCount] = useState(null);
 
@@ -41,8 +41,7 @@ const CommentItem = ({comment, userId, setIsCommentAddedDeleted }) => {
 		};
 	}
 	const handleDeleteComment = async () => {
-		alert('Supprimer');
-
+	
 		try {
 			const res = await deleteApiObjet(API_COMMENTS+`/${comment.commentId}`);
 			if (res) {
@@ -87,7 +86,7 @@ const CommentItem = ({comment, userId, setIsCommentAddedDeleted }) => {
 					</div>
 				</div>
 				<div className = {styles.comment__deletebtnframe}>
-					{ comment.userId === userId &&
+					{ ((comment.userId === userId) || isAdmin) &&
 						<div className = {styles.comment__deletebtn}
 								aria-label ="Supprimer cette commentaire" role = "button" 
 								title = "Supprimer cette commentaire"
@@ -110,8 +109,9 @@ const CommentItem = ({comment, userId, setIsCommentAddedDeleted }) => {
 
 CommentItem.propTypes = {
 	comment: PropTypes.object,
-	userId: PropTypes.number
-	
+	userId: PropTypes.number,
+	isAdmin : PropTypes.bool,
+	setIsCommentAddedDeleted : PropTypes.func
 }
 
 export default CommentItem;
