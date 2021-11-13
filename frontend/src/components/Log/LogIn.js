@@ -12,34 +12,37 @@ const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotour
 	const [redirect, setRedirect] = useState(false);
 	const [error, setError] = useState(false);
 	const [isLoading, setLoading] = useState(false);
+	const [isMounted, setIsMounted] = useState(false);
 	
 	const handleLogIn = async (e)  => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const res = await fetch(API_AUTH_LOGIN, {
-				method: 'POST',
-				headers: {'Content-Type': 'application/json'},
-				credentials: 'include',
-				body: JSON.stringify({
-					email,
-					password
-				})
-			});
-			if (res.ok) {
-				const content = await res.json();
-		//		console.log('content in log', content);
-				setRedirect(true);	  
-				setFirstname(content.firstName);
-				setLastname(content.lastName);
-				setUserId(content.userId);
-				setIsAdmin(content.isAdmin);
-				setUserPhotourl(content.photourl);
-				setIsProfilChanged(false);
+			if (isMounted) {
+				const res = await fetch(API_AUTH_LOGIN, {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					credentials: 'include',
+					body: JSON.stringify({
+						email,
+						password
+					})
+				});
+				if (res.ok) {
+					const content = await res.json();
+			//		console.log('content in log', content);
+					setRedirect(true);	  
+					setFirstname(content.firstName);
+					setLastname(content.lastName);
+					setUserId(content.userId);
+					setIsAdmin(content.isAdmin);
+					setUserPhotourl(content.photourl);
+					setIsProfilChanged(false);
+				}
+				 else {
+					 setError(true);
+				 };
 			}
-			 else {
-				 setError(true);
-			 };
 		}
 		catch {
 			setError(true);
@@ -48,15 +51,15 @@ const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotour
 			setLoading(false);
 		}
 	};
-/*
+
 	useEffect(() => {
-		
+		setIsMounted(true);
 		return () => {
-			//cleanup
+			setIsMounted(false);
 		}
 	}, [])
 
-	*/
+	
 
 	if (redirect) {
 		return <Redirect to="/"/>;

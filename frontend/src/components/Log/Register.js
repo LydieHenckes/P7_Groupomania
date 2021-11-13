@@ -61,6 +61,14 @@ const Register = ({isAdmin}) => {
 	};
 
 	const handleKeyUpLastname = (e) => {
+		console.log(lastnameInputRef.current.patternMismatch);
+		console.log(lastnameInputRef.current);
+		if (lastnameInputRef.current.validity.patternMismatch) {
+			lastnameInputRef.current.classList.add('_alert');
+		} else {
+			lastnameInputRef.current.classList.remove('_alert');
+		}
+/*
 		if(lastnameInputRef.current.patternMismatch) {
 			lastnameInputRef.current.setCustomValidity("Veuillez renseigner un nom valid...");
 			lastnameInputRef.current.classList.add('_alert');
@@ -69,6 +77,7 @@ const Register = ({isAdmin}) => {
 			lastnameInputRef.current.setCustomValidity("");
 			lastnameInputRef.current.classList.remove('_alert');
 		}
+	*/
 	}
 	const handleKeyUpFirstname = (e) => {
 	//	const styleAlert = {styles.alert}
@@ -93,6 +102,8 @@ const Register = ({isAdmin}) => {
 
 
 	const handleKeyUpPassword  = (e) => {
+		//pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}"
+		console.log(passwordInputRef.current.validity.patternMismatch);
 			if(passwordInputRef.current.validity.patternMismatch) {
 				passwordInputRef.current.setCustomValidity("min 8 charactères, min 1 lettre majuscule, 1 lettre minuscule, 1 chiffre!");
 				passwordInputRef.current.classList.add('_alert');
@@ -134,7 +145,7 @@ const Register = ({isAdmin}) => {
 		
 						<input type="password" className="form-control" 
 								id = "inputPassword"  name="password" ref = {passwordInputRef} onKeyUp={handleKeyUpPassword}
-								placeholder="Mot de passe" pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}" required 
+								placeholder="Mot de passe" pattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$" required 
 								onChange = {e => setPassword(e.target.value)} />
 						<small id="emailHelp" className="form-text text-muted ">min 8 charactères, min 1 lettre majuscule, 1 lettre minuscule, 1 chiffre</small>
 						 
