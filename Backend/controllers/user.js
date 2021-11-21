@@ -96,7 +96,7 @@ exports.signup = (req, res, next) => {
 			  res.cookie('jwt', token, { httpOnly: true, maxAge : 24 * 60 * 60 * 1000});
 			  res.status(200).json({
 				 userId: user.id,
-				 firstName: user.firstname,
+				 firstName: user.firstname, 
 				 lastName: user.lastname,
 				 isAdmin: user.isadmin,
 				 isDeleted: user.isdeleted,

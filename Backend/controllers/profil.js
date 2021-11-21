@@ -22,7 +22,7 @@ exports.getAllUsers = (req, res, next) => {
 
 exports.getOneUser = (req, res, next) => {
 	const id = req.params.id;
-	//db.User.findByPk(req.params.id)
+	
 	db.User.findOne({ where: { id: id } })
 	.then(user => {
 		 res.status(200).json({
@@ -39,10 +39,10 @@ exports.getOneUser = (req, res, next) => {
 };
 
 exports.modifyUser = (req, res, next) => {
-	console.log('-------------------------dans la fonction modify');
-	console.log(req.body.firstname);
+//	console.log('-------------------------dans la fonction modify');
+//	console.log(req.body.firstname);
 	if (req.file) {
-		console.log(req.file.filename);
+	//	console.log(req.file.filename);
 		db.User.findByPk(req.params.id)
 			.then(user => {
 				if (user.photourl) {
@@ -103,7 +103,7 @@ exports.deleteUser = (req, res, next) => {
                 .catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de l'utilisateur !" }));
 				})
 			} else {
-				console.log('-----------------++++++++++++--------------', req.params.id);
+//				console.log('-----------------++++++++++++--------------', req.params.id);
 				user.update({
 					firstname: "L'utilisateur est désinscrit",
 					lastname: '',

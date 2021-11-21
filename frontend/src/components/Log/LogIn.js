@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import { withErrorApi } from '../../hoc-helpers/withErrorApi';
 import Loader from '../Loader/Loader';
 import { API_AUTH_LOGIN } from '../../constants/api'
 
 
-const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotourl, setIsProfilChanged }) => {
+const LogIn = ({setErrorApi, setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotourl, setIsProfilChanged }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [redirect, setRedirect] = useState(false);
-	const [error, setError] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const [isMounted, setIsMounted] = useState(false);
 	
@@ -30,7 +29,7 @@ const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotour
 				});
 				if (res.ok) {
 					const content = await res.json();
-			//		console.log('content in log', content);
+		
 					setRedirect(true);	  
 					setFirstname(content.firstName);
 					setLastname(content.lastName);
@@ -38,14 +37,16 @@ const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotour
 					setIsAdmin(content.isAdmin);
 					setUserPhotourl(content.photourl);
 					setIsProfilChanged(false);
+
+					setErrorApi(false);
 				}
 				 else {
-					 setError(true);
+					 setErrorApi(true);
 				 };
 			}
 		}
 		catch {
-			setError(true);
+			setErrorApi(true);
 		}
 		finally {
 			setLoading(false);
@@ -58,7 +59,6 @@ const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotour
 			setIsMounted(false);
 		}
 	}, [])
-
 	
 
 	if (redirect) {
@@ -70,28 +70,23 @@ const LogIn = ({setFirstname, setLastname, setUserId, setIsAdmin, setUserPhotour
 			{isLoading ? (
      			   <Loader />
  		   ) : (
-				<div>
-					{error && <ErrorMessage />}
-					{!error &&
-						<div className= "form-signin">
-							<form onSubmit = {handleLogIn}>
-								<h1 className="h3 mb-3 fw-normal">Connectez-vous</h1>
-								<input type="email" className="form-control" placeholder="Adresse mail"   required
-									onChange = {e => setEmail(e.target.value)} />
-								<input type="password" className="form-control" placeholder="Mot de passe" required
-									onChange = {e => setPassword(e.target.value)} />
-								<button className="w-100 btn btn-lg btn-primary mt-2" type="submit">Se connecter</button>
-							</form>
-						</div>
-				}
-				</div>
+					<div className= "form-signin">
+						<form onSubmit = {handleLogIn}>
+							<h1 className="h3 mb-3 fw-normal">Connectez-vous</h1>
+							<input type="email" className="form-control" placeholder="Adresse mail"   required
+								onChange = {e => setEmail(e.target.value)} />
+							<input type="password" className="form-control" placeholder="Mot de passe" required
+								onChange = {e => setPassword(e.target.value)} />
+							<button className="w-100 btn btn-lg btn-primary mt-2" type="submit">Se connecter</button>
+						</form>
+					</div>
   		  )}
 		</>
 	)
 }
 
 LogIn.propTypes = {
-
+	setErrorApi: PropTypes.func,
 	setFirstname: PropTypes.func, 
 	setLastname :PropTypes.func,
 	setUserId :PropTypes.func,
@@ -100,4 +95,4 @@ LogIn.propTypes = {
 	setIsProfilChanged :PropTypes.func
 }
 
-export default LogIn;
+export default withErrorApi(LogIn);

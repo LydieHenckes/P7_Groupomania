@@ -8,7 +8,6 @@ import ImageProfilCropper from '../../components/ImageCropper/ImageProfilCropper
 import demoAvatar from '../../assets/avatar.png';
 import PropTypes from 'prop-types';
 import styles from './ProfilPage.module.css';
-//import cn from 'classnames';
 
 const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, setIsProfilChanged}) => {
 	const [profil, setProfil] = useState(null);
@@ -19,8 +18,6 @@ const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, 
 	const [redirectToLogIn, setRedirectToLogIn] = useState(false);
 	const [isModifyAvatar, setIsModifyAvatar] = useState(false);
 	const [newImage, setNewImage] = useState(undefined);
-
-	
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -39,7 +36,6 @@ const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, 
 				alert("Les changements n'ont pas été enrégistré !");
 				setRedirect(true);
 			};
-
 	}
 
 	const handleChange = (event) => {
@@ -81,11 +77,11 @@ const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, 
 
 	useEffect(() => {
 		async function getProfil(url) {
-	//		console.log('Premier: ', userId);
+
 			try {
 				const res = await getApiResource(url);
 				if (res) {
-			//		console.log('deuxième', res);
+
 					setErrorApi(false);
 					setProfil(res);
 			
@@ -99,12 +95,13 @@ const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, 
 				}
 			} catch(err) {
 				console.log(err);
+				setErrorApi(true);
 			} finally {
 
 			}
 		}
 		getProfil(API_USERS+`/${userId}`);
-	}, [file, newFile, newImage]) 
+	}, [file, newFile, newImage, setErrorApi, userId]) 
 
 	if (redirect) {
 		return <Redirect to="/"/>;

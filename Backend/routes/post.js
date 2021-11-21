@@ -5,6 +5,9 @@ const express = require('express');
 // importation de middleware d'authéntification
 const auth = require('../middleware/auth');
 
+// importation de middleware d'authéntification par userId
+const authUserId = require('../middleware/auth-userId');
+
 // importation de middleware pour les images
 const multer = require('../middleware/multer-config');
 
@@ -24,7 +27,7 @@ router.get('/:id', auth, postCtrl.getOnePost);
 router.get('/:id/user', auth,  postCtrl.getPostsByUserId);
 
 // crée un nouveau post dans la base posts
-router.post('/', auth, multer, postCtrl.createPost);
+router.post('/', auth, authUserId, multer, postCtrl.createPost);
 
 // modification de post 
 router.put('/:id',  auth, postCtrl.modifyPost);
@@ -33,10 +36,10 @@ router.put('/:id',  auth, postCtrl.modifyPost);
 router.delete('/:id', auth, postCtrl.deletePost);
 
 //like d'un post //auth,
-router.post('/like',  auth, postCtrl.likePost);
+router.post('/like',  auth, authUserId, postCtrl.likePost);
 
 //dislike d'un post
-router.post('/dislike', auth,  postCtrl.dislikePost);
+router.post('/dislike', auth, authUserId, postCtrl.dislikePost);
 
 
 module.exports = router;

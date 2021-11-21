@@ -4,7 +4,7 @@ import avatar from '../../assets/avatar.png';
 import { getApiResource } from '../../utils/network';
 import { withErrorApi } from '../../hoc-helpers/withErrorApi';
 import { API_USERS } from '../../constants/api';
-
+import LinkBack from '../../components/LinkBack';
 
 import styles from './PersonPage.module.css';
 
@@ -32,10 +32,11 @@ const PersonPage = ({ match, setErrorApi}) => {
 			}
 		}
 		fetchPerson();
-	}, []);
+	}, [match.params.id, setErrorApi]);
 	
 	return (
 		<div className = {styles.container}>
+			<LinkBack />
 			{personInfo && (
 				<>
 					<div className = {styles.person}>

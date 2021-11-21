@@ -48,7 +48,6 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 			}
 			return true;
 		}
-
 	}
 
 	const handlePicture = (event) => {
@@ -98,7 +97,9 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 }
 
 PostNew.propTypes = {
-	text: PropTypes.string
+	userId : PropTypes.number,
+	userPhotourl : PropTypes.string, 
+	setIsPostAdded: PropTypes.func
 }
 
 export default PostNew;

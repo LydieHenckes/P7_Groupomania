@@ -34,43 +34,6 @@ exports.getAllPosts = (req, res, next) => {
 	})
 	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
 
-
-	/*	{
-			attributes: {
-				include: [
-					[
-						db.sequelize.literal(
-							`(
-								SELECT COUNT (*) FROM likes AS like
-								WHERE like.post_id = posts.id
-							)`
-						), 'countLikes'
-					]
-				]
-			}
-		},*/
-
-		/*
-
-		db.Post.findAll(
-		{
-		include: [{
-			model: db.User,
-			attributes: ["id", "firstname", "lastname", "isadmin", "photourl"] 
-		} ,
-		{
-			model:  db.PostPhoto,
-			attributes: ["photourl"] 
-		}
-	],
-		order: [
-			 ['createdAt', 'DESC']
-	 ],
-  })
-  	.then(posts => res.status(200).json(posts))
-	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
-*/
-
 };
 
 exports.getPostsByUserId = (req, res, next) => {
@@ -101,34 +64,6 @@ exports.getPostsByUserId = (req, res, next) => {
 		res.status(200).json(posts)
 	})
 	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
-
-	/*
-	db.Post.findAll({
-		where: {
-			user_id: req.params.id
-		},
-		include: [{
-			model: db.User,
-			attributes: ["id", "firstname", "lastname", "isadmin", "photourl"] 
-			// ajouter les count de likes et dislikes 
-			//[Sequelize.fn("COUNT", Sequelize.col("sensors.id")), "sensorCount"]
-		} ,
-		{
-			model:  db.PostPhoto,
-			attributes: ["photourl"] 
-		},
-		{
-			model: db.Like,
-			attributes: [[db.Sequelize.fn('COUNT', db.Sequelize.col(id), 'likes')]]
-		}
-	],
-		order: [
-			 ['createdAt', 'DESC']
-	 ],
-  })
-  	.then(posts => res.status(200).json(posts))
-	.catch(error => res.status(500).json({ error:"Erreur de la base de données" }));
-*/
 };
 
 exports.getOnePost = (req, res, next) => {
@@ -254,15 +189,6 @@ exports.deletePost = (req, res, next) => {
 						.then(() => res.status(200).json({ message: "Post supprimé !" }))
 						.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
 					}
-/*
-				post.destroy({ where: { id: req.params.id} })
-					.then(() => res.status(200).json({ message: "Post supprimé !" }))
-					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de post !" }));
-					*/
-	/*  // changer pour ce code si il y a des vrais images
-	
-			
-				*/
 			})
 			.catch(error => res.status(400).json({ error :"L'erreur de la base de données !"}));
 		}
@@ -322,7 +248,7 @@ exports.likePost = (req, res, next) => {
 						}
 					})
 					.then(([like, created]) => {
-								console.log('----**********************-------------------');
+						//		console.log('----**********************-------------------');
 								const { QueryTypes } = require('sequelize');
 								db.sequelize.query(`SELECT
 									( SELECT COUNT(*) FROM likes WHERE likes.post_id =${req.body.postId} ) AS likeCount,

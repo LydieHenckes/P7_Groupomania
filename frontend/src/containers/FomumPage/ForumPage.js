@@ -6,17 +6,15 @@ import PostsList from '../../components/ForumPage/PostsList/PostsList';
 import PostNew from '../../components/ForumPage/PostsList/PostNew';
 import{ getApiResource } from '../../utils/network';
 import { API_POSTS } from '../../constants/api';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 
 import cn from 'classnames';
 import  '../App/App.css';
 import styles from './ForumPage.module.css';
 
-//setErrorApi,
-const ForumPage = ({  firstname, lastname, userId, isAdmin, userPhotourl, isProfilChanged }) => {
+
+const ForumPage = ({ setErrorApi, firstname, lastname, userId, isAdmin, userPhotourl, isProfilChanged }) => {
 	const [posts, setPosts] = useState(null);
 	const [isPostAdded, setIsPostAdded] = useState(false);
-	const [error, setError] = useState(false);
 
 	useEffect(() => {
 		let isMounted = true;
@@ -41,25 +39,23 @@ const ForumPage = ({  firstname, lastname, userId, isAdmin, userPhotourl, isProf
 				if (isMounted) {
 					setPosts(postsList);
 					setIsPostAdded(false);
-					//setErrorApi(false);
+					setErrorApi(false);
 				}
 			}
 		})
 		.catch(error => {
 			if (isMounted) {
-				setError(true);
-			} //setErrorApi(true);
+				setErrorApi(true);
+			} 
 			console.log(error);
 		})
 		return () => { isMounted = false };
-	}, [isPostAdded, isProfilChanged])
+	}, [isPostAdded, isProfilChanged, setErrorApi])
 
 
 	
 	return (
 		<>
-			{error && <ErrorMessage />}
-			{!error && 
 			<div className = 'wrapper'>
 				<div className = {cn(styles.forum__element, styles.intro)}>
 					{firstname ? 'Bienvenue '+ firstname +' '+ lastname : 
@@ -72,10 +68,9 @@ const ForumPage = ({  firstname, lastname, userId, isAdmin, userPhotourl, isProf
 				</div>
 				{firstname && <PostNew userId = {userId} userPhotourl = {userPhotourl} setIsPostAdded = {setIsPostAdded} />} 
 				{firstname && posts && <PostsList posts = {posts} userId = {userId} isAdmin = {isAdmin} userPhotourl = {userPhotourl} setIsPostAdded = {setIsPostAdded} />}
-			</div>}
+			</div>
 		</>
 
-		
 	)
 }
 

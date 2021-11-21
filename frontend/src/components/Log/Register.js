@@ -1,11 +1,9 @@
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { API_AUTH_SIGNUP } from '../../constants/api'
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Loader from '../Loader/Loader';
-
-import styles from './Log.module.css';
 
 const Register = ({isAdmin}) => {
 	const [firstname, setFirstname] = useState('');
@@ -15,6 +13,7 @@ const Register = ({isAdmin}) => {
 	const [redirect, setRedirect] = useState(false);
 	const [error, setError] = useState(false);
 	const [isLoading, setLoading] = useState(false);
+	const [isMounted, setIsMounted] = useState(false);
 
 	const firstnameInputRef = useRef(null);
 	const lastnameInputRef = useRef(null);
@@ -27,29 +26,32 @@ const Register = ({isAdmin}) => {
 
 		setLoading(true);
 		try {
-			const isAdminValue = isAdmin;
-			console.log('is Admin: ', isAdmin);
-			const res = await fetch(API_AUTH_SIGNUP, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-					firstname,
-				 	lastname,
-               email,
-               password,
-					isAdmin: isAdminValue
-            })
-        });
-			const content = await res.json();
+			if (isMounted) {
+				const isAdminValue = isAdmin;
+				console.log('is Admin: ', isAdmin);
+				const res = await fetch(API_AUTH_SIGNUP, {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({
+						firstname,
+						lastname,
+						email,
+						password,
+						isAdmin: isAdminValue
+					})
+				});
+				const content = await res.json();
 
-			if (res.ok) {
-				setRedirect(true)
+				if (res.ok) {
+					setRedirect(true)
+				}
+				else 	{
+					const messageError = res.status + ' : '+content.error;
+					console.error('Could not fetch. ', messageError);
+					alert('Mot de passe est incorrect ! ', content.error);
+				}
 			}
-			else 	{
-				const messageError = res.status + ' : '+content.error;
-				console.error('Could not fetch. ', messageError);
-				alert('Mot de passe est incorrect ! ', content.error);
-			}
+			
 		}
 		catch(error) {
 			console.error('Could not fetch. ', error.message);
@@ -60,27 +62,18 @@ const Register = ({isAdmin}) => {
 		}
 	};
 
+	// functions de contrôle de champs de saisie
 	const handleKeyUpLastname = (e) => {
-		console.log(lastnameInputRef.current.patternMismatch);
-		console.log(lastnameInputRef.current);
 		if (lastnameInputRef.current.validity.patternMismatch) {
-			lastnameInputRef.current.classList.add('_alert');
-		} else {
-			lastnameInputRef.current.classList.remove('_alert');
-		}
-/*
-		if(lastnameInputRef.current.patternMismatch) {
 			lastnameInputRef.current.setCustomValidity("Veuillez renseigner un nom valid...");
 			lastnameInputRef.current.classList.add('_alert');
-			// si la saisie ne correspond pas à pattern, ajout de classe _alert
 		} else {
 			lastnameInputRef.current.setCustomValidity("");
 			lastnameInputRef.current.classList.remove('_alert');
 		}
-	*/
 	}
+
 	const handleKeyUpFirstname = (e) => {
-	//	const styleAlert = {styles.alert}
 		if(firstnameInputRef.current.validity.patternMismatch) {
 			firstnameInputRef.current.setCustomValidity("Veuillez renseigner un prénom valid...");
 			firstnameInputRef.current.classList.add('_alert');
@@ -100,19 +93,24 @@ const Register = ({isAdmin}) => {
 		}
 	}
 
-
 	const handleKeyUpPassword  = (e) => {
-		//pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}"
 		console.log(passwordInputRef.current.validity.patternMismatch);
-			if(passwordInputRef.current.validity.patternMismatch) {
-				passwordInputRef.current.setCustomValidity("min 8 charactères, min 1 lettre majuscule, 1 lettre minuscule, 1 chiffre!");
-				passwordInputRef.current.classList.add('_alert');
-				// si la saisie ne correspond pas à pattern, ajout de classe _alert
-			} else {
-				passwordInputRef.current.setCustomValidity("");
-				passwordInputRef.current.classList.remove('_alert');
-			}
+		if(passwordInputRef.current.validity.patternMismatch) {
+			passwordInputRef.current.setCustomValidity("min 8 charactères, min 1 lettre majuscule, 1 lettre minuscule, 1 chiffre!");
+			passwordInputRef.current.classList.add('_alert');
+			// si la saisie ne correspond pas à pattern, ajout de classe _alert
+		} else {
+			passwordInputRef.current.setCustomValidity("");
+			passwordInputRef.current.classList.remove('_alert');
+		}
 	}
+
+	useEffect(() => {
+		setIsMounted(true);
+		return () => {
+			setIsMounted(false);
+		}
+	}, [])
 
 	if (redirect) {
 		return <Redirect to="/login"/>;

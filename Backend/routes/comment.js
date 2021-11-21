@@ -6,6 +6,9 @@ const express = require('express');
 // importation de middleware d'authéntification
 const auth = require('../middleware/auth');
 
+// importation de middleware d'authéntification par userId
+const authUserId = require('../middleware/auth-userId');
+
 // importation de middleware pour les images
 const multer = require('../middleware/multer-config');
 
@@ -20,16 +23,16 @@ const commentCtrl = require('../controllers/comment');
 router.get('/:id', auth, commentCtrl.getCommentsByPostId);
 
 // crée un nouveau comment dans la base comments
-router.post('/', multer, auth, commentCtrl.createComment);
+router.post('/',  auth, authUserId, multer, commentCtrl.createComment);
 
 //suppression d'un comment
 router.delete('/:id', auth, commentCtrl.deleteComment);
 
 //like d'un comment
-router.post('/like', auth, commentCtrl.likeComment);
+router.post('/like', auth, authUserId, commentCtrl.likeComment);
 
 //dislike d'un comment
-router.post('/dislike', auth,  commentCtrl.dislikeComment);
+router.post('/dislike', auth, authUserId, commentCtrl.dislikeComment);
 
 
 module.exports = router;

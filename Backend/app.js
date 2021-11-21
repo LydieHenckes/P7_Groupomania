@@ -10,7 +10,6 @@ const cors = require('cors');
 
 // Sécurité
 const helmet = require("helmet");   
-const hpp = require("hpp"); 
 const rateLimit = require('express-rate-limit');
 const toobusy = require('toobusy-js');
 
@@ -22,7 +21,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors({
 	credentials: true,
-	origin: ['http://localhost:3000'], //true, 
+	origin:  true, //['http://localhost:3000'],
 	allowedHeaders: ['Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'],
 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 }))
@@ -33,8 +32,6 @@ app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//  pour se protéger contre les attaques de pollution des paramètres HTTP)
-app.use(hpp());
 
 // utilisation express-rate-limiter pour le nombre max de tentatives de connexion
 const apiLimiter = rateLimit({
@@ -56,7 +53,6 @@ const reqLimiter = rateLimit({
 app.use(function(req, res, next) {
 	if (toobusy()) {
 		 res.status(503).json({ error: new Error('Server Too Busy') });
-	//	 res.send(503, "Server Too Busy");
 	} else {
 		next();
 	}
@@ -67,12 +63,8 @@ app.use(function(req, res, next) {
 app.use('/api/posts', reqLimiter);
 app.use('/api/comments', reqLimiter);
 
-
-
-
-
+// syncronisation avec la base de données
 const db = require("./models");
-
 db.sequelize.sync();
 
 // définition des routes

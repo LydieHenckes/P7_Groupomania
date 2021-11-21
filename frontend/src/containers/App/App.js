@@ -23,25 +23,25 @@ const App = () => {
 
   useEffect(() => {
     async function fetchAuth() {
-      // setDataLoading(true);
+      // requête de authentification (si l'utilisateur est resté connecté), vérifie la présence de cookie, envoyé par le serveur lors de connection
       try {
         const res = await fetch(API_AUTH_AUTHUSER, {
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',
           });
-          const content = await res.json();
-          console.log('content: ', content);
-          setFirstname(content.firstName);
-          setLastname(content.lastName);
-          setUserId(content.userId);
-          setIsAdmin(content.isAdmin);
-          setUserPhotourl(content.photourl);
-          setIsProfilChanged(false);
+        if (res.ok) {
+            const content = await res.json();
+            setFirstname(content.firstName);
+            setLastname(content.lastName);
+            setUserId(content.userId);
+            setIsAdmin(content.isAdmin);
+            setUserPhotourl(content.photourl);
+         }
+
+        setIsProfilChanged(false);
       } catch (err) {
           console.log(err);
-      } finally {
-        //  setDataLoading(false);
-      }
+      } 
     }
     fetchAuth();
   }, [isProfilChanged])

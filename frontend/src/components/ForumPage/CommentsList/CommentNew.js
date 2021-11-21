@@ -42,15 +42,13 @@ class CommentNew extends Component {
 			data.append('content', this.state.commentNewContent);
 			if (this.state.file) data.append('image',this.state.file);
 
-//			if (this.state.file) console.log('new image: ', this.state.file);
 			const res = await postApiObjetWithImage(API_COMMENTS, data);
 			if (res) {
 				this.setState({commentNewContent: '', file: ''});
 				this.props.setIsCommentAddedDeleted(true);
 			};
 
-		} else {alert('Message est vide!')}
-		
+		} else {alert('Message de commentaire est vide!')}
 	}
 
 	render() {

@@ -58,7 +58,7 @@ const CommentItem = ({comment, userId, isAdmin, setIsCommentAddedDeleted }) => {
 	useEffect(() => {
 		setCommentlikeCount(comment.commentlikeCount);
 		setCommentdislikeCount(comment.commentdislikeCount);
-	}, []);
+	}, [comment.commentlikeCount, comment.commentdislikeCount]);
 
 	return (
 		<>
@@ -91,7 +91,7 @@ const CommentItem = ({comment, userId, isAdmin, setIsCommentAddedDeleted }) => {
 								aria-label ="Supprimer cette commentaire" role = "button" 
 								title = "Supprimer cette commentaire"
 								onClick = {handleDeleteComment} >
-							<i class="fas fa-trash-alt"></i>
+							<i className="fas fa-trash-alt"></i>
 						</div>
 						}
 				</div>

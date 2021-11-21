@@ -1,0 +1,15 @@
+.link {
+	display: inline-flex;
+	align-items: center;
+	margin: 15px 0;
+	font-weight: 600;
+	color: var(--color-btn);
+	text-decoration: none;
+}
+.link__img {
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
+	object-fit: cover;
+	object-position: center center;
+}

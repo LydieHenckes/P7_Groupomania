@@ -108,13 +108,7 @@ exports.deleteComment = (req, res, next) => {
 						.then(() => res.status(200).json({ message: "Comment supprimé !" }))
 						.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de comment !" }));
 					}
-	/*
-				comment.destroy({ where: { id: req.params.id} })
-					.then(() => res.status(200).json({ message: "Comment supprimé !" }))
-					.catch(error => res.status(400).json({ error: "Une erreur est survenu lors de suppression de comment !" }));
-	*/
-					/*  // changer si il y a des vrais images
-				*/
+
 			})
 			.catch(error => res.status(400).json({ error :"L'erreur de la base de données !"}));
 		}

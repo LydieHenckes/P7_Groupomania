@@ -6,9 +6,8 @@
 								"hdnav";
 	margin: auto; 
 	align-items: center;
+	padding: var(--spacing-medium) var(--spacing-small) ;
 
-	padding-top: var(--spacing-medium);
-	padding-bottom: var(--spacing-medium);
 	border-bottom: solid 3px var(--color-border-header);
 }
 .menu li {

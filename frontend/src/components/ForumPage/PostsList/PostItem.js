@@ -4,7 +4,6 @@ import CommentsList from '../CommentsList/CommentsList';
 import{ postApiObjet, deleteApiObjet } from '../../../utils/network';
 import { API_POSTLIKE, API_POSTDISLIKE, API_POSTS } from '../../../constants/api';
 import styles from './PostsList.module.css';
-//import cn from 'classnames';
 
 const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 
@@ -63,7 +62,6 @@ const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 			setLikeCount(post.likeCount);
 			setDislikeCount(post.dislikeCount);
 		}
-		
 	}, [post]); 
 
 
@@ -99,15 +97,15 @@ const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 								aria-label ="Supprimer ce post" role = "button" 
 								title = "Supprimer ce post"
 								onClick = {handleDeletePost}>
-							<i class="fas fa-trash-alt"></i>
+							<i className="fas fa-trash-alt"></i>
 						</div>
 						}
 				</div>
 			</div>
 			
 			<div className = {styles.item__likes}>
-				<div onClick = {handleLikePost}><i class="far fa-thumbs-up"></i> {likeCount} </div>
-				<div onClick = {handleDislikePost}><i class="far fa-thumbs-down"></i>{` ${dislikeCount}`}</div>
+				<div onClick = {handleLikePost}><i className="far fa-thumbs-up"></i> {likeCount} </div>
+				<div onClick = {handleDislikePost}><i className="far fa-thumbs-down"></i>{` ${dislikeCount}`}</div>
 			</div>
 
 			<div >

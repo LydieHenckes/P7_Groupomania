@@ -4,13 +4,7 @@ import PostItem from './PostItem';
 import cn from 'classnames';
 import styles from './PostsList.module.css';
 
-//<i class="fas fa-thumbs-up"></i>
-//<i class="fas fa-thumbs-down"></i>
-
-
 const PostsList = ({posts, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
-
-
 
 	return (
 		<>
@@ -31,7 +25,6 @@ PostsList.propTypes = {
 	isAdmin : PropTypes.bool, 
 	userPhotourl : PropTypes.string, 
 	setIsPostAdded: PropTypes.func
-
 }
 
 export default PostsList;

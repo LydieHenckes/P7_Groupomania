@@ -11,8 +11,6 @@ const CommentsList = ({postId, userId, isAdmin, userPhotourl}) => {
 	const [comments, setComments] = useState([]);
 	const [isCommentAddedDeleted, setIsCommentAddedDeleted] = useState(false); 
 
-	
-
 	useEffect(() => {
 		async function getComments(url) {
 			try {
@@ -36,7 +34,7 @@ const CommentsList = ({postId, userId, isAdmin, userPhotourl}) => {
 						}
 					})
 					setComments(commentsList);
-					setIsCommentAddedDeleted(false); //!!!
+					setIsCommentAddedDeleted(false); 
 				}
 			} catch(err) {
 				console.log(err);

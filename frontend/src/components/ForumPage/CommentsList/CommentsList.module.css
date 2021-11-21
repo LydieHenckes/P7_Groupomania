@@ -17,18 +17,15 @@
 }
 
 @media (min-width: 576px) {
-	
 	.comment__frame {
 		display: flex;
 		flex-direction: row;
 	}
 }
 
-
-
 .comment__autorimg {
 	margin-right: 0.5em;
-	border: 1px solid var(--color-border-frame);
+
 	height: 1.8em;
 	width: 1.8em;
 	border-radius: 50%;
@@ -53,7 +50,6 @@
 }
 
 .comment__deletebtn {
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -67,7 +63,6 @@
 	padding: 0.4em;
 	font-style: italic;
 	flex-grow: 1;
-
 	border-radius: 5px;
 	background-color: var(--color-background-logo);
 	display: flex;
@@ -223,6 +218,5 @@ button {
 .commentNew__photourl {
 	font-size: 0.8em;
 	font-style: italic;
-
 	margin: 0 0 0.5em 3.5em;
 }
