@@ -1,4 +1,5 @@
 backend/node_modules
 backend/images/
+.backend/images/.gitkeep
 backend/.env
 frontend/node_modules
