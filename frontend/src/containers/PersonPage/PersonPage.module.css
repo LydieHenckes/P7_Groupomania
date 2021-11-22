@@ -27,6 +27,12 @@
 	position: relative;
 	border-radius: 5px;
 }
+@media (min-width: 768px) {
+	.person__photo{
+		height: 350px;
+	}
+}
+
 .person__photo img {
 	position: absolute;
 	object-fit: cover;

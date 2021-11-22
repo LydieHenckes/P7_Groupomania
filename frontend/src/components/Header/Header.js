@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { API_AUTH_LOGOUT } from '../../constants/api'
-//import  logo  from '../../assets/icon-left-font.svg'
-import  logo  from '../../assets/logo-header-blue.png'
+import  logo  from '../../assets/logo-gpm-red.png'
+
+//import  logo  from '../../assets/logo-header-blue.png'
 import styles from './Header.module.css';
 
 const Header = ({ firstname, setFirstname, setLastname, setUserId, setIsAdmin }) => {
