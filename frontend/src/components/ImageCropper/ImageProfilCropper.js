@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import styles from './ImageProfilCropper.module.css';
 import ImageCropper from "./ImageCropper";
 
@@ -6,6 +6,8 @@ function ImageProfilCropper({setFile, setNewImage, setIsModifyAvatar, setNewFile
 	const [imageToCrop, setImageToCrop] = useState(undefined);
 	const [croppedImage, setCroppedImage] = useState(undefined);
 	const [croppedFile, setCroppedFile] = useState(undefined);
+
+	const imageInputRef = useRef(null);
 
 	const onUploadFile = (event) => {
 		 if (event.target.files && event.target.files.length > 0) {
@@ -19,6 +21,14 @@ function ImageProfilCropper({setFile, setNewImage, setIsModifyAvatar, setNewFile
 		 }
 	};
 
+	const onKeyDownUploadFile = (event) => {
+		if(event.keyCode === 32 || event.keyCode === 13){
+			event.preventDefault();
+		//	console.log(imageInputRef);
+			imageInputRef.current.click();
+		 }    
+	}
+
 	const onSelectPhoto = () => {
 		setNewImage(croppedImage);
 		setFile(croppedFile);
@@ -28,16 +38,21 @@ function ImageProfilCropper({setFile, setNewImage, setIsModifyAvatar, setNewFile
 
 	return (
 		 <div className = {styles.frame}>
-			  <div className = {styles.file__addbtn} aria-label ="Ajouter une image" role = "button" title = "Ajoutez une image">
+			  <div className = {styles.file__addbtn}   title = "Ajoutez une image">
 				<label htmlFor="image" >
-					<i className="far fa-image"></i> Cliquer ici pour ajouter votre photo
+					<i className="far fa-image"></i> <span className = {styles.file__addbtntitle}
+										aria-label ="Ajouter une image" 
+										role="button" aria-controls="filename" tabindex="0"
+										onKeyDown = {onKeyDownUploadFile}>Cliquer ici pour ajouter votre photo</span>
 				</label>
 				<input 	id = "image" 
 							accept = "image/*" 
 							type = "file" 
 							name = "image" 
+							tabindex = "1"
+							ref = {imageInputRef}
 							className ={styles.file__input}
-							onChange={onUploadFile} />
+							onChange={onUploadFile}  />
 		 	  </div>
 
 			  <div>
@@ -60,11 +75,11 @@ function ImageProfilCropper({setFile, setNewImage, setIsModifyAvatar, setNewFile
 			  }
 			  {
 					croppedImage &&
-					<div  className = {styles.file__addbtn} 
+					<button  className = {styles.file__addbtn} 
 							onClick = {onSelectPhoto} 
-							aria-label ="Changer la photo" role = "button" 
+							aria-label ="Changer la photo"
 							title = "Changer la photo">Enrégistrer la nouvelle photo
-					</div>
+					</button>
 			  }
 		 </div>
 	);

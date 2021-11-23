@@ -53,6 +53,12 @@ const CommentItem = ({comment, userId, isAdmin, setIsCommentAddedDeleted }) => {
 		} 
 
 	}
+	const handleKeyDownDeleteComment = (event) => {
+		if(event.keyCode === 32 || event.keyCode === 13){
+			event.preventDefault();
+			handleDeleteComment();
+			} 	
+	}
 
 
 	useEffect(() => {
@@ -90,6 +96,8 @@ const CommentItem = ({comment, userId, isAdmin, setIsCommentAddedDeleted }) => {
 						<div className = {styles.comment__deletebtn}
 								aria-label ="Supprimer cette commentaire" role = "button" 
 								title = "Supprimer cette commentaire"
+								tabIndex = "0"
+								onKeyDown = {handleKeyDownDeleteComment}
 								onClick = {handleDeleteComment} >
 							<i className="fas fa-trash-alt"></i>
 						</div>

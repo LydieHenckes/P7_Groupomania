@@ -5,6 +5,7 @@
 	font-weight: 600;
 	color: var(--color-btn);
 	text-decoration: none;
+	padding: 5px;
 }
 .link__img {
 	width: 30px;

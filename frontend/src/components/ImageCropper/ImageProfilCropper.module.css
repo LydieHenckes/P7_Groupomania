@@ -13,3 +13,6 @@
 	 color: white;
 	cursor: pointer;
  }
+ .file__addbtntitle:focus {
+	 background: var(--color-btn-focus);
+ }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { postApiObjetWithImage } from '../../../utils/network';
 import { API_POSTS } from '../../../constants/api';
@@ -8,6 +8,8 @@ import styles from './PostsList.module.css';
 const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 	const [postNewContent, setPostNewContent] = useState('');
 	const [file, setFile] = useState('');
+
+	const imagePostNewInputRef = useRef(null);
 
 	const handleSendNewPost = async (event) => {
 		event.preventDefault();
@@ -57,6 +59,12 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 		}
 	}
 
+	const onKeyDownUploadFile = (event) => {
+		if(event.keyCode === 32 || event.keyCode === 13){
+			event.preventDefault();
+			imagePostNewInputRef.current.click();
+		 }    
+	}
 
 	return (
 		<div className = {styles.posts__container}>
@@ -68,13 +76,15 @@ const PostNew = ({userId, userPhotourl, setIsPostAdded}) => {
 							: <i className="fas fa-user"></i>
 						}
 					</div>
-					<div className = {styles.postNew__addfile} aria-label ="Ajouter une image" role = "button" title = "Ajoutez une image">
+					<div className = {styles.postNew__addfile} tabindex ="0" aria-label ="Ajouter une image" 
+							onKeyDown = {onKeyDownUploadFile}	role = "button" title = "Ajoutez une image">
 						<label htmlFor="file-upload" className="custom-file-upload">
-							<i className="far fa-image"></i>
+							<span><i className="far fa-image"></i></span>
 						</label>
 						<input id="file-upload" type="file"
 						 	className = {styles.file__input}
 							name="file"
+							ref = {imagePostNewInputRef}
 							accept=".jpg, .jpeg, .png"
 							onChange={event => handlePicture(event)}
 						/>

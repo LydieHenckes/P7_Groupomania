@@ -14,9 +14,11 @@ class CommentNew extends Component {
 
 	constructor(props) {
 		super(props);
+		this.fileCommentInput = React.createRef();
 		this.handleChange = this.handleChange.bind(this);
 		this.handlePicture = this.handlePicture.bind(this);
 		this.handleSendNewComment = this.handleSendNewComment.bind(this);
+		this.onKeyDownUploadCommentFile = this.onKeyDownUploadCommentFile.bind(this);
 	}
 
 	handleChange(event) {
@@ -28,7 +30,12 @@ class CommentNew extends Component {
 
 	}
 
-	
+	onKeyDownUploadCommentFile(event) {
+		if(event.keyCode === 32 || event.keyCode === 13){
+			event.preventDefault();
+			this.fileCommentInput.current.click();
+		 }  
+	}
 	
 	async handleSendNewComment (event)  {
 
@@ -64,7 +71,8 @@ class CommentNew extends Component {
 							}
 						</div>
 
-						<div className = {styles.commentNew__addfile} aria-label ="Ajouter une image" role = "button" title = "Ajoutez une image">
+						<div className = {styles.commentNew__addfile} tabIndex = "0" 
+							onKeyDown = {this.onKeyDownUploadCommentFile} aria-label ="Ajouter une image" role = "button" title = "Ajoutez une image">
 							<label htmlFor={id} className="custom-file-upload">
 								<i className="far fa-image"></i>
 							</label>
@@ -73,7 +81,7 @@ class CommentNew extends Component {
 								className = {styles.commentNew__file}
 								accept=".jpg, .jpeg, .png"
 								onChange={this.handlePicture}
-
+								ref = {this.fileCommentInput}
 							/>
 						</div>
 

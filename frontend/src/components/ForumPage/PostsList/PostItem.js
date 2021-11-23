@@ -45,7 +45,7 @@ const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 	}
 
 	const handleDeletePost = async () => {
-		alert('supprimer ce post');
+		alert('Suppression de post !');
 		try {
 			const res = await deleteApiObjet(API_POSTS+`/${post.postId}`);
 			if (res) {
@@ -55,6 +55,12 @@ const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 		catch(err) {
 			console.log(err);
 		} 
+	}
+	const handleKeyDownDeletePost = (event) => {
+		if(event.keyCode === 32 || event.keyCode === 13){
+			event.preventDefault();
+			handleDeletePost();
+			}    
 	}
 	
 	useEffect(() => {
@@ -94,9 +100,11 @@ const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 				<div className = {styles.item__deletebtnframe}>
 					{((post.userId === userId) || isAdmin) &&
 						<div className = {styles.item__deletebtn}
+						      tabIndex = "0"
 								aria-label ="Supprimer ce post" role = "button" 
 								title = "Supprimer ce post"
-								onClick = {handleDeletePost}>
+								onClick = {handleDeletePost}
+								onKeyDown = {handleKeyDownDeletePost}>
 							<i className="fas fa-trash-alt"></i>
 						</div>
 						}
@@ -104,8 +112,10 @@ const PostItem = ({post, userId, isAdmin, userPhotourl, setIsPostAdded}) => {
 			</div>
 			
 			<div className = {styles.item__likes}>
-				<div onClick = {handleLikePost}><i className="far fa-thumbs-up"></i> {likeCount} </div>
-				<div onClick = {handleDislikePost}><i className="far fa-thumbs-down"></i>{` ${dislikeCount}`}</div>
+				<div onClick = {handleLikePost}
+					aria-label ="Liker ce post" role = "button"><i className="far fa-thumbs-up"></i> {likeCount} </div>
+				<div onClick = {handleDislikePost}
+				   aria-label ="Disliker ce post" role = "button"><i className="far fa-thumbs-down"></i>{` ${dislikeCount}`}</div>
 			</div>
 
 			<div >

@@ -115,8 +115,11 @@
 .file__btn label {
 	cursor: pointer;
 }
+.file__btn:focus {
+	background: var(--color-btn-focus);
+}
 
 .form__button {
-	width: 100px;
+	width: 200px;
 	height: 32px;
 }

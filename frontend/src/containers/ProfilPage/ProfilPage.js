@@ -48,6 +48,13 @@ const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, 
 		setIsModifyAvatar(true);
 	}
 
+	const onKeyDownChangeAvatar =(event) => {
+		if(event.keyCode === 32 || event.keyCode === 13){
+			event.preventDefault();
+			setIsModifyAvatar(true);
+		 }
+	}
+
 	const onDeleteProfil   = async () => {
 		const result = window.confirm('Vous voulez supprimer votre compte définitivement ?');
 		if (!result) return;
@@ -129,10 +136,11 @@ const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, 
 								
 								}
 							</div>
-							<div className = {styles.file__btn} onClick = {onChangeAvatar} aria-label ="Changer la photo" role = "button" title = "Changer la photo">Changer la photo</div>
+							<div className = {styles.file__btn} onClick = {onChangeAvatar} aria-label ="Changer la photo" role = "button" 
+									tabindex="0" onKeyDown = {onKeyDownChangeAvatar}	title = "Changer la photo">Changer la photo</div>
 						</div>
 
-						<div className = {styles.formframe}>
+						<div className = {styles.formframe} >
 							<div className = {styles.formframe__item}>
 								<label htmlFor = "formFirstname" className= {styles.formframe__label}>Prénom</label>
 								<input id = "formFirstname" type = "text" name = "firstname" defaultValue = {profil.firstname} 
@@ -140,23 +148,23 @@ const ProfilPage = ({setErrorApi, userId, setFirstname, setLastname, setUserId, 
 							</div>
 							<div className = {styles.formframe__item}>
 								<label htmlFor = "formLastname" className= {styles.formframe__label}>Nom</label>
-								<input id = "formLastname" type = "text" name = "lastname" defaultValue = {profil.lastname} 
+								<input id = "formLastname"   type = "text" name = "lastname" defaultValue = {profil.lastname} 
 										className = {styles.formframe__input} onChange = {handleChange}></input>
 							</div>
 							<div className = {styles.formframe__item}>
 								<label htmlFor = "formEmail" className= {styles.formframe__label}>Email</label>
-								<input id = "formEmail" type = "email" name = "email" defaultValue = {profil.email} 
+								<input id = "formEmail"    type = "email" name = "email" defaultValue = {profil.email} 
 										className = {styles.formframe__input} onChange = {handleChange}></input>
 							</div>
 							
 						</div>
 
 						<div className = {styles.formframe}>
-							<button className = {styles.form__button} type="submit" title="Enregister">Enregister</button>
+							<button className = {styles.form__button}   type="submit" title="Enregister">Enregister</button>
 						</div>
 
 						<div  className = {styles.formframe}>
-							<div className = {styles.file__btn} onClick = {onDeleteProfil} aria-label ="Supprimer le profil" role = "button" title = "Supprimer le profil">Supprimer mon profil</div>
+							<button className = {styles.form__button}   onClick = {onDeleteProfil} aria-label ="Supprimer le profil" title = "Supprimer le profil">Supprimer profil</button>
 						</div>
 					</form>
 				</div>
